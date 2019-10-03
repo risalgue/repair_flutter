@@ -1,9 +1,13 @@
+import 'package:crashlytics/crashlytics.dart';
 import 'package:flutter/material.dart';
 //import 'Home.dart';
 import 'HomeMaterial.dart';
 import 'package:flutter/services.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  Crashlytics.setup();
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -32,6 +36,7 @@ class MyApp extends StatelessWidget {
           title: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
           body1: TextStyle(fontSize: 17.0, color: Color.fromRGBO(38, 38, 38, 1.0)),
           body2: TextStyle(fontSize: 12.0, color: Color.fromRGBO(153, 153, 153, 1.0)),
+          subhead: TextStyle(fontSize: 17.0, color: Color.fromRGBO(38, 38, 38, 1.0), fontWeight: FontWeight.w600),
           display1: TextStyle(fontSize: 22.0, color: Colors.lightGreen[500]),
         ),
       ),

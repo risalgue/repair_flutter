@@ -14,6 +14,7 @@ class DatabaseHelper {
 
   // Make this a singleton class.
   DatabaseHelper._privateConstructor();
+
   static final DatabaseHelper instance = DatabaseHelper._privateConstructor();
 
   // Only allow a single open connection to the database.

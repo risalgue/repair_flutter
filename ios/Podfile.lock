@@ -1,4 +1,11 @@
 PODS:
+  - crashlytics (0.0.1):
+    - Crashlytics
+    - Fabric
+    - Flutter
+  - Crashlytics (3.13.4):
+    - Fabric (~> 1.10.2)
+  - Fabric (1.10.2)
   - Flutter (1.0.0)
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
@@ -14,6 +21,7 @@ PODS:
     - FMDB (~> 2.7.2)
 
 DEPENDENCIES:
+  - crashlytics (from `.symlinks/plugins/crashlytics/ios`)
   - Flutter (from `.symlinks/flutter/ios`)
   - image_picker (from `.symlinks/plugins/image_picker/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
@@ -22,9 +30,13 @@ DEPENDENCIES:
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
+    - Crashlytics
+    - Fabric
     - FMDB
 
 EXTERNAL SOURCES:
+  crashlytics:
+    :path: ".symlinks/plugins/crashlytics/ios"
   Flutter:
     :path: ".symlinks/flutter/ios"
   image_picker:
@@ -37,6 +49,9 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/sqflite/ios"
 
 SPEC CHECKSUMS:
+  Crashlytics: 2dfd686bcb918dc10ee0e76f7f853fe42c7bd552
+  crashlytics: 67d74c015dcfd5f9c4b82fe12d0c599eb042e9d3
+  Fabric: 706c8b8098fff96c33c0db69cbf81f9c551d0d74
   Flutter: 58dd7d1b27887414a370fcccb9e645c08ffd7a6a
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   image_picker: 16e5fec1fbc87fd3b297c53e4048521eaf17cd06

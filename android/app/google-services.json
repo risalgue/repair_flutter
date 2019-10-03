@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "537151513234",
+    "firebase_url": "https://repairflutter.firebaseio.com",
+    "project_id": "repairflutter",
+    "storage_bucket": "repairflutter.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:537151513234:android:439ec5a96a0a4d5f3cbc4b",
+        "android_client_info": {
+          "package_name": "com.schueco.repairflutter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "537151513234-p3odhtuetrppmbk8td9n6ff005ono849.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDjEAxHjKF9HdTU4N8weoPQfpLzZUuhfr4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "537151513234-p3odhtuetrppmbk8td9n6ff005ono849.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

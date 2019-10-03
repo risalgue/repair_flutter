@@ -51,7 +51,7 @@ class CompanyProfileState extends State<CompanyProfileV> {
     }
   }
 
-  Widget _GetAditionalInformation(Company company) {
+  Widget _getAditionalInformation(Company company) {
     if (company.additionalInf == null || company.additionalInf == "") {
       return Container(
         margin: EdgeInsets.symmetric(horizontal: 8,vertical: 0),
@@ -149,7 +149,7 @@ class CompanyProfileState extends State<CompanyProfileV> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            this._GetAditionalInformation(companyList[index]),
+                            this._getAditionalInformation(companyList[index]),
                             new Row(
                               children: <Widget>[
                                 new Container(

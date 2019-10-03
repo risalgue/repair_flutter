@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:repairservices/models/Company.dart';
 import 'AddressCompany.dart';
 
+
 class CompanyDataV extends StatefulWidget {
   final Company company;
 
@@ -48,6 +49,7 @@ class CompanyDataState extends State<CompanyDataV> {
         )
     );
   }
+
   @override
   void initState() {
     super.initState();

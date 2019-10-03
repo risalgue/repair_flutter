@@ -134,9 +134,9 @@ class HomeBody extends StatelessWidget {
                   value,
                   textAlign: TextAlign.center,
                   style: const TextStyle(
-                    fontSize: 17.0,
+                    fontSize: 18.0,
                     color: Colors.black,
-                    fontWeight: FontWeight.w600,
+                    fontWeight: FontWeight.w500,
 
                   ),
                 ),
@@ -161,7 +161,6 @@ class HomeBody extends StatelessWidget {
         ) ,
         child: GestureDetector(
           onTap: (){
-            debugPrint("Searching");
           },
           child: Row(
             children: <Widget>[
@@ -200,23 +199,6 @@ class HomeBody extends StatelessWidget {
       )
     );
 
-//    Widget gridSection = new Expanded(
-//      flex: 1,
-//      child: new GridView.count(
-//        crossAxisCount: 2,
-//        childAspectRatio: 1.0,
-//        mainAxisSpacing: 0.0,
-//        crossAxisSpacing: 0.0,
-//        children: <Widget>[
-//          _displayGridItem("Article Identification\nService",'assets/article-identification.png'),
-//          _displayGridItem("Article Bookmark\nList",'assets/article-identification.png'),
-//          _displayGridItem("Project\nDocumentation",'assets/article-identification.png'),
-//          _displayGridItem("Docu Center",'assets/article-identification.png'),
-//          _displayGridItem("Company profile",'assets/article-identification.png'),
-//          _displayGridItem("Service / FAQ",'assets/article-identification.png'),
-//        ]
-//      )
-//    );
 
     Widget loginBt = Padding(
         padding: EdgeInsets.all(16),

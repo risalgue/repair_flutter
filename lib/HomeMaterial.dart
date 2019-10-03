@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'Login.dart';
 import 'ArticleIdentification.dart';
 import 'CompanyProfile.dart';
+import 'ArticleList.dart';
 
 class HomeM extends StatelessWidget {
   const HomeM();
@@ -443,9 +444,9 @@ class HomeBody extends StatelessWidget {
                     value,
                     textAlign: TextAlign.center,
                     style: const TextStyle(
-                      fontSize: 17.0,
+                      fontSize: 18.0,
                       color: Colors.black,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w400,
 
                     ),
                   ),
@@ -457,57 +458,59 @@ class HomeBody extends StatelessWidget {
       );
     }
 
-    Widget searchBar = new Container (
-        height: 56.0,
-        color: Colors.grey,
-        child: Center(
-          child: Container(
-              width: screenWidth - 16.0,
-              height: 40,
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(14.0)
-              ) ,
-              child: GestureDetector(
-                onTap: (){
-                  debugPrint("Searching");
-                },
-                child: Row(
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.only(left: 16),
-                      child: Icon(
-                          Icons.search,
-                          color: Colors.grey
-                      ),
-                    ),
-                    new Text(
-                      "SearchBar",
-                      style: const TextStyle(
-                        fontSize: 17,
-                        color: Colors.grey,
-                        fontWeight: FontWeight.normal,
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(left: screenWidth - 190),
-                      width: 40,
-                      height: 40,
-                      child: InkWell(
-                        child: Image.asset(
-                          'assets/qrCodeGrey.png',
+    Widget searchBar(BuildContext context) {
+      return new Container (
+          height: 56.0,
+          color: Colors.grey,
+          child: Center(
+            child: Container(
+                width: screenWidth - 16.0,
+                height: 40,
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(14.0)
+                ) ,
+                child: GestureDetector(
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => ArticleListV()));
+                  },
+                  child: Row(
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.only(left: 16),
+                        child: Icon(
+                            Icons.search,
+                            color: Colors.grey
                         ),
-                        onTap: (){
-                          debugPrint('QRCode Pressed');
-                        },
                       ),
-                    ),
-                  ],
-                ),
-              )
-          ),
-        )
-    );
+                      new Text(
+                        "SearchBar",
+                        style: const TextStyle(
+                          fontSize: 17,
+                          color: Colors.grey,
+                          fontWeight: FontWeight.normal,
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(left: screenWidth - 190),
+                        width: 40,
+                        height: 40,
+                        child: InkWell(
+                          child: Image.asset(
+                            'assets/qrCodeGrey.png',
+                          ),
+                          onTap: (){
+                            debugPrint('QRCode Pressed');
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+            ),
+          )
+      );
+    }
 
 //    Widget gridSection = new Expanded(
 //      flex: 1,
@@ -564,7 +567,7 @@ class HomeBody extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              searchBar,
+              searchBar(context),
               Row(
                 children: <Widget>[
                   Expanded(

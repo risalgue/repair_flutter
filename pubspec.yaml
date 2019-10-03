@@ -27,6 +27,8 @@ dependencies:
   path_provider: ^0.4.1
   shared_preferences: ^0.4.3
   image_picker: ^0.6.1+4
+  http: ^0.12.0+2
+  crashlytics: ^0.0.2
 
 dev_dependencies:
   flutter_test:
@@ -79,6 +81,7 @@ flutter:
     - assets/buildingGreen.png
     - assets/checkGreen.png
     - assets/checkGrey.png
+    - assets/bookmarkWhite.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 

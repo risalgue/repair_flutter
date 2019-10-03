@@ -6,7 +6,10 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'database_helpers.dart';
-
+import 'package:http/http.dart' as http;
+import 'package:path/path.dart';
+import 'CompanyLayoutPreview.dart';
+import 'CompanyEmailStandartText.dart';
 
 class CreateCompanyV extends StatefulWidget {
 
@@ -69,7 +72,8 @@ class CreateCompanyState extends State<CreateCompanyV> {
                   style: TextStyle(color: Theme.of(context).primaryColor)),
               isDefaultAction: true,
               onPressed: () {
-                debugPrint('Download taped');
+                _downloadImage();
+                Navigator.pop(context);
               }
             ),
             CupertinoDialogAction(
@@ -123,7 +127,7 @@ class CreateCompanyState extends State<CreateCompanyV> {
   Future getImageFromGallery() async {
     final File image = await ImagePicker.pickImage(source: ImageSource.gallery);
     final directory = await getApplicationDocumentsDirectory();
-    final File newImage = await image.copy('${directory.path}/${DateTime.now()}.png');
+    final File newImage = await image.copy('${directory.path}/${DateTime.now().toUtc().toIso8601String()}.png');
     debugPrint(newImage.path);
     company.logoPath = newImage.path;
     setState(() {
@@ -136,7 +140,20 @@ class CreateCompanyState extends State<CreateCompanyV> {
     int id = await helper.insertCompany(company);
     print('inserted row: $id');
   }
+  Future _downloadImage() async {
+    var response = await http.get(weblinkController.text);
+    var documentDirectory = await getApplicationDocumentsDirectory();
 
+    File file = new File(
+        join(documentDirectory.path, '${DateTime.now().toUtc().toIso8601String()}.png')
+    );
+    file.writeAsBytes(response.bodyBytes);
+    company.logoPath = file.path;
+    setState(() {
+
+      _image = file;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -209,7 +226,7 @@ class CreateCompanyState extends State<CreateCompanyV> {
             ),
             trailing: Icon(Icons.arrow_forward_ios),
             onTap: () {
-              debugPrint('Layout preview');
+              Navigator.push(context, MaterialPageRoute(builder: (context) => new CompanyLayoutPreview(company)));
             },
           ),
           Divider(height: 1),
@@ -220,7 +237,12 @@ class CreateCompanyState extends State<CreateCompanyV> {
             ),
             trailing: Icon(Icons.arrow_forward_ios),
             onTap: () {
-              debugPrint('E-mail standart text');
+              Navigator.push(context, MaterialPageRoute(builder: (context) => new CompanyEmailStandartTextV(company)))
+                  .then((value) {
+                this.setState(() {
+                  debugPrint(company.textExportEmail);
+                });
+              });
             },
           ),
           Divider(height: 1),
