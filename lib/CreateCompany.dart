@@ -162,7 +162,7 @@ class CreateCompanyState extends State<CreateCompanyV> {
         iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
         backgroundColor: Colors.white,
         actionsIconTheme: IconThemeData(color: Colors.grey),
-        title: Text(this.newCompany == false ? "Company Details" : "Create Company"),
+        title: Text(this.newCompany == false ? "Company Details" : "Create Company",style: Theme.of(context).textTheme.body1),
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios),
           onPressed: () {

@@ -1,12 +1,34 @@
-import 'package:crashlytics/crashlytics.dart';
+//import 'package:crashlytics/crashlytics.dart';
 import 'package:flutter/material.dart';
-//import 'Home.dart';
+import 'package:flutter_crashlytics/flutter_crashlytics.dart';
 import 'HomeMaterial.dart';
 import 'package:flutter/services.dart';
+import 'dart:async';
 
-void main() {
-  Crashlytics.setup();
+void main() async {
+  bool isInDebugMode = false;
+  FlutterError.onError = (FlutterErrorDetails details) {
+    if (isInDebugMode) {
+      // In development mode simply print to console.
+      FlutterError.dumpErrorToConsole(details);
+    } else {
+      // In production mode report to the application zone to report to
+      // Crashlytics.
+      Zone.current.handleUncaughtError(details.exception, details.stack);
+    }
+  };
+
+  await FlutterCrashlytics().initialize();
+  debugPrint('Crashlitics inicialized');
+  runZoned<Future<Null>>(() async {
+    runApp(MyApp());
+  }, onError: (error, stackTrace) async {
+    // Whenever an error occurs, call the `reportCrash` function. This will send
+    // Dart errors to our dev console or Crashlytics depending on the environment.
+    await FlutterCrashlytics().reportCrash(error, stackTrace, forceCrash: false);
+  });
   runApp(MyApp());
+
 }
 
 class MyApp extends StatelessWidget {
