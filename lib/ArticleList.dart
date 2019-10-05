@@ -116,6 +116,7 @@ class ArticleListState extends State<ArticleListV> {
                             maxLines: 1,
                             controller: numberController,
                             textInputAction: TextInputAction.search,
+                            keyboardType: TextInputType.number,
                             onSubmitted: (search){
                               _searchArticle(numberController.text);
                               _endSearch();

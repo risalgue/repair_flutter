@@ -3,7 +3,11 @@
     <!-- Flutter needs it to communicate with the running application
          to allow setting breakpoints, to provide hot reload, etc.
     -->
-
+<!--    <meta-data-->
+<!--        android:name="io.fabric.ApiKey"-->
+<!--        android:value="6a7ce1f6b703cc7a825c703c0b7bffbdaad45672"-->
+<!--    />-->
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 </manifest>
