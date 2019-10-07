@@ -1,12 +1,11 @@
-import 'package:crashlytics/crashlytics.dart';
 import 'package:flutter/material.dart';
+import 'package:repairservices/crashlytics.dart';
 //import 'Home.dart';
 import 'HomeMaterial.dart';
 import 'package:flutter/services.dart';
 
 void main() {
-  Crashlytics.setup();
-  runApp(MyApp());
+  runAppWithCrashlytics(app: MyApp(), debugMode: false);
 }
 
 class MyApp extends StatelessWidget {
