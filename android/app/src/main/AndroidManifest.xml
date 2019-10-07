@@ -7,6 +7,7 @@
          additional functionality it is fine to subclass or reimplement
          FlutterApplication and put your custom class here. -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <application
         android:name="io.flutter.app.FlutterApplication"
         android:label="repairservices"
@@ -24,7 +25,8 @@
                  defined in @style/LaunchTheme). -->
             <meta-data
                 android:name="io.flutter.app.android.SplashScreenUntilFirstFrame"
-                android:value="true" />
+                android:value="true"
+            />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -35,5 +37,5 @@
                 android:value="6a7ce1f6b703cc7a825c703c0b7bffbdaad45672"
         />
     </application>
-
+    <uses-permission android:name="android.permission.INTERNET" />
 </manifest>

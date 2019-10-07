@@ -31,10 +31,10 @@ class CompanyDataState extends State<CompanyDataV> {
     showCupertinoDialog(
         context: context,
         builder: (BuildContext context ) => CupertinoAlertDialog(
-          title: new Text(title),
+          title: new Text(title, style: Theme.of(context).textTheme.body1,),
           actions: <Widget>[
             CupertinoDialogAction(
-              child: new Text(textButton),
+              child: new Text(textButton, style: TextStyle(color: Theme.of(context).primaryColor)),
               isDefaultAction: true,
               onPressed: action,
             ),
@@ -93,7 +93,7 @@ class CompanyDataState extends State<CompanyDataV> {
         iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
         backgroundColor: Colors.white,
         actionsIconTheme: IconThemeData(color: Colors.grey),
-        title: Text("Company data"),
+        title: Text("Company data",style: Theme.of(context).textTheme.body1),
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios),
           onPressed: () {

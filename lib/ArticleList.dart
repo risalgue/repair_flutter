@@ -116,6 +116,7 @@ class ArticleListState extends State<ArticleListV> {
                             maxLines: 1,
                             controller: numberController,
                             textInputAction: TextInputAction.search,
+                            keyboardType: TextInputType.number,
                             onSubmitted: (search){
                               _searchArticle(numberController.text);
                               _endSearch();
@@ -152,7 +153,7 @@ class ArticleListState extends State<ArticleListV> {
         iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
         backgroundColor: Colors.white,
 //        actionsIconTheme: IconThemeData(color: Colors.red),
-        title: Text("Article List"),
+        title: Text("Article List",style: Theme.of(context).textTheme.body1),
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios),
           onPressed: () {

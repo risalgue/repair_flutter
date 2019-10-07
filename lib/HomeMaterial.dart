@@ -425,8 +425,8 @@ class HomeBody extends StatelessWidget {
 //    );
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
-    final topButtonPadding = screenHeight * 0.031;
-    final bottomButtonPadding = screenHeight * 0.021;
+    final topButtonPadding = screenHeight * 0.030;
+    final bottomButtonPadding = screenHeight * 0.020;
 //    final buttonBorderColor = Border.all(color: Color.fromARGB(100, 191, 191, 191),width: 1);
 
     Widget _displayGridItem(String value, String imageUrl, Function action) {

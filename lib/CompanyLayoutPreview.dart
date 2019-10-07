@@ -71,7 +71,7 @@ class CompanyLayoutPreview extends StatelessWidget {
           iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
           backgroundColor: Colors.white,
           actionsIconTheme: IconThemeData(color: Colors.grey),
-          title: Text("Layout Preview"),
+          title: Text("Layout Preview",style: Theme.of(context).textTheme.body1),
           leading: IconButton(
             icon: Icon(Icons.arrow_back_ios),
             onPressed: () {

@@ -48,7 +48,7 @@ class SettingsArticleIdentificationState extends State<SettingsArticleIdentifica
         iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
         backgroundColor: Colors.white,
         actionsIconTheme: IconThemeData(color: Theme.of(context).primaryColor),
-        title: Text("Settings"),
+        title: Text("Settings",style: Theme.of(context).textTheme.body1),
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios),
           onPressed: () {

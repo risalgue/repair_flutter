@@ -15,7 +15,7 @@ class CompanyEmailStandartTextV extends StatelessWidget {
           iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
           backgroundColor: Colors.white,
           actionsIconTheme: IconThemeData(color: Colors.grey),
-          title: Text("E-mail standart text"),
+          title: Text("E-mail standart text",style: Theme.of(context).textTheme.body1),
           leading: IconButton(
             icon: Icon(Icons.arrow_back_ios),
             onPressed: () {
