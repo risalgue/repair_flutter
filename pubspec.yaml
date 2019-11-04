@@ -11,7 +11,7 @@ description: RepairService for Flutter
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.0+1
+version: 1.0.5+1
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
@@ -29,6 +29,10 @@ dependencies:
   image_picker: ^0.6.1+4
   http: ^0.12.0+2
   flutter_crashlytics: ^1.0.0
+  dio: ^3.0.2
+  modal_progress_hud: ^0.1.3
+  intl: ^0.16.0
+  file_picker: ^1.4.2
 
 dev_dependencies:
   flutter_test:
@@ -82,6 +86,27 @@ flutter:
     - assets/checkGreen.png
     - assets/checkGrey.png
     - assets/bookmarkWhite.png
+    - assets/cart.png
+    - assets/unselectedSquare.png
+    - assets/Minus.png
+    - assets/Plus.png
+    - assets/options-icon.png
+    - assets/check_empty.png
+    - assets/check_filled.png
+    - assets/trashRed.png
+    - assets/upCarrotGreen.png
+    - assets/windowsFitting.png
+    - assets/doorFitting.png
+    - assets/slidingFitting.png
+    - assets/otherFitting.png
+    - assets/sunShaddingFitting.png
+    - assets/whiteSquare.png
+    - assets/pdf.png
+    - assets/doorType.png
+    - assets/hingeType.png
+    - assets/lockDimensionPage1.png
+    - assets/lockDimensionPage2.png
+    - assets/lockDimensionPage3.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 

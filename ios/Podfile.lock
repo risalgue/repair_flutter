@@ -2,6 +2,8 @@ PODS:
   - Crashlytics (3.13.4):
     - Fabric (~> 1.10.2)
   - Fabric (1.10.2)
+  - file_picker (0.0.1):
+    - Flutter
   - Flutter (1.0.0)
   - flutter_crashlytics (0.0.1):
     - Crashlytics
@@ -21,6 +23,7 @@ PODS:
     - FMDB (~> 2.7.2)
 
 DEPENDENCIES:
+  - file_picker (from `.symlinks/plugins/file_picker/ios`)
   - Flutter (from `.symlinks/flutter/ios`)
   - flutter_crashlytics (from `.symlinks/plugins/flutter_crashlytics/ios`)
   - image_picker (from `.symlinks/plugins/image_picker/ios`)
@@ -29,12 +32,14 @@ DEPENDENCIES:
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  https://github.com/CocoaPods/Specs.git:
     - Crashlytics
     - Fabric
     - FMDB
 
 EXTERNAL SOURCES:
+  file_picker:
+    :path: ".symlinks/plugins/file_picker/ios"
   Flutter:
     :path: ".symlinks/flutter/ios"
   flutter_crashlytics:
@@ -51,6 +56,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   Crashlytics: 2dfd686bcb918dc10ee0e76f7f853fe42c7bd552
   Fabric: 706c8b8098fff96c33c0db69cbf81f9c551d0d74
+  file_picker: 408623be2125b79a4539cf703be3d4b3abe5e245
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
   flutter_crashlytics: 7b5bba7233066381c8e18343435342ba05f3053c
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
@@ -59,6 +65,6 @@ SPEC CHECKSUMS:
   shared_preferences: 1feebfa37bb57264736e16865e7ffae7fc99b523
   sqflite: ff1d9da63c06588cc8d1faf7256d741f16989d5a
 
-PODFILE CHECKSUM: 7fb83752f59ead6285236625b82473f90b1cb932
+PODFILE CHECKSUM: 808c99958112feeee78a45ee4c42c7c160ced350
 
-COCOAPODS: 1.7.5
+COCOAPODS: 1.8.4

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:repairservices/FittingSelection.dart';
 
 class IdentificationTypeV extends StatelessWidget {
   @override
@@ -82,7 +83,10 @@ class IdentificationTypeV extends StatelessWidget {
                           ],
                         ),
                         onTap: (){
-                          debugPrint('record product data taped');
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => FittingSelection()),
+                          );
                         },
                       ),
                     )

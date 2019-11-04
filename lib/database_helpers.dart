@@ -1,5 +1,7 @@
 import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:path/path.dart';
+import 'package:repairservices/models/Product.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:repairservices/models/Windows.dart';
@@ -42,11 +44,12 @@ class DatabaseHelper {
               CREATE TABLE $tableWindows (
                 $columnId INTEGER PRIMARY KEY,
                 $columnName TEXT NOT NULL,
-                $columnCreated TEXT NOT NULL,
-                $columnNumber INTEGER NOT NULL,
-                $columnSystemDepth TEXT NOT NULL,
-                $columnProfileSystem TEXT NOT NULL,
-                $columnDescription TEXT NOT NULL
+                $columnCreated TEXT,
+                $columnNumber INTEGER,
+                $columnSystemDepth TEXT,
+                $columnProfileSystem TEXT,
+                $columnDescription TEXT,
+                $columnFilePath TEXT
               )
               ''');
     await db.execute('''
@@ -68,6 +71,24 @@ class DatabaseHelper {
                 $columnTextExportEmail TEXT,
                 $columnDefaultC INTEGER not null,
                 $columnLocation TEXT
+              )
+              ''');
+    await db.execute('''
+              CREATE TABLE $tableProduct (
+                $columnProductId INTEGER PRIMARY KEY,
+                $columnShortText TEXT NOT NULL,
+                $columnProductNumber TEXT NOT NULL,
+                $columnProductUrl TEXT NOT NULL,
+                $columnProductQuantity TEXT
+              )
+              ''');
+    await db.execute('''
+              CREATE TABLE $tableProductInCart (
+                $columnProductId INTEGER PRIMARY KEY,
+                $columnShortText TEXT NOT NULL,
+                $columnProductNumber TEXT NOT NULL,
+                $columnProductUrl TEXT NOT NULL,
+                $columnProductQuantity TEXT
               )
               ''');
   }
@@ -98,10 +119,6 @@ class DatabaseHelper {
     List<Map> result = await db.query(tableWindows);
     // print the results
     List<Windows> list = new List();
-//    result.forEach((row) => print(row));
-//    flutter: {_id: 1, name: Fitting Windows, created: 2019-09-19T00:05:53.361620, number: 582935892385, systemDepth: 50mm, profileSystem: System Serie 50 DPL, description: My description of the fitting selection article windows}
-//    flutter: {_id: 2, name: Fitting Windows, created: 2019-09-19T00:05:56.553328, number: 582935892385, systemDepth: 50mm, profileSystem: System Serie 50 DPL, description: My description of the fitting selection article windows}
-//    flutter: {_id: 3, name: Fitting Windows, created: 2019-09-19T00:05:57.544801, number: 582935892385, systemDepth: 50mm, profileSystem: System Serie 50 DPL, description: My description of the fitting selection article windows}
 
     for(final row in result){
       list.add(Windows.fromMap(row));
@@ -145,10 +162,6 @@ class DatabaseHelper {
     List<Map> result = await db.query(tableCompany);
     // print the results
     List<Company> list = new List();
-//    result.forEach((row) => print(row));
-//    flutter: {_id: 1, name: Fitting Windows, created: 2019-09-19T00:05:53.361620, number: 582935892385, systemDepth: 50mm, profileSystem: System Serie 50 DPL, description: My description of the fitting selection article windows}
-//    flutter: {_id: 2, name: Fitting Windows, created: 2019-09-19T00:05:56.553328, number: 582935892385, systemDepth: 50mm, profileSystem: System Serie 50 DPL, description: My description of the fitting selection article windows}
-//    flutter: {_id: 3, name: Fitting Windows, created: 2019-09-19T00:05:57.544801, number: 582935892385, systemDepth: 50mm, profileSystem: System Serie 50 DPL, description: My description of the fitting selection article windows}
 
     for(final row in result){
       list.add(Company.fromMap(row));
@@ -166,5 +179,38 @@ class DatabaseHelper {
     Database db = await database;
     return await db.delete(tableCompany, where: '$columnCompanyId = ?', whereArgs: [id]);
   }
-// TODO: deleteWindows(int id)
+
+  // Insert Product
+  Future<int> insertProduct(Product product, bool existInCart) async {
+    debugPrint('inserting Product with name: ${product.shortText.value}');
+    Database db = await database;
+    int id = await db.insert(!existInCart ? tableProduct : tableProductInCart, product.toMap());
+    return id;
+  }
+
+  //Get All Article Products
+  Future<List<Product>> queryAllProducts(bool existInCart) async {
+    Database db = await database;
+    List<Map> result = await db.query(!existInCart ? tableProduct : tableProductInCart);
+    // print the results
+    List<Product> list = new List();
+
+    for(final row in result){
+      list.add(Product.fromMap(row));
+    }
+    return list;
+  }
+
+  //Delete Product
+  Future<int> deleteProduct(int id, bool existInCart) async {
+    Database db = await database;
+    return await db.delete(!existInCart ? tableProduct : tableProductInCart, where: '$columnProductId = ?', whereArgs: [id]);
+  }
+  //Update products
+  Future<int> updateProduct(Product product, bool existInCart) async {
+    debugPrint('updating product in Cart');
+    Database db = await database;
+    return await db.update(!existInCart ? tableProduct : tableProductInCart, product.toMap(),
+        where: '$columnProductId = ?', whereArgs: [product.id]);
+  }
 }

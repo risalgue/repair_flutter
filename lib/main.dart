@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
-//import 'package:crashlytics/crashlytics.dart';
 import 'package:repairservices/crashlytics.dart';
 //import 'Home.dart';
-import 'package:flutter_crashlytics/flutter_crashlytics.dart';
+//import 'package:flutter_crashlytics/flutter_crashlytics.dart';
 import 'HomeMaterial.dart';
 import 'package:flutter/services.dart';
-import 'dart:async';
+//import 'dart:async';
+
+
+
 
 void main() {
   runAppWithCrashlytics(app: MyApp(), debugMode: false);
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([
@@ -25,9 +27,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         // Define the default brightness and colors.
 //        brightness: Brightness.dark,
-        primaryColor: Colors.lightGreen[500],
-        accentColor: Colors.cyan[600],
-        dividerColor: Color.fromRGBO(191, 191, 191, 1.0),
+//        primaryColor: Colors.lightGreen[500],
+      primaryColor: Color.fromRGBO(120, 185, 40, 1.0),
         // Define the default font family.
         fontFamily: 'Montserrat',
 
@@ -40,6 +41,7 @@ class MyApp extends StatelessWidget {
           body2: TextStyle(fontSize: 12.0, color: Color.fromRGBO(153, 153, 153, 1.0)),
           subhead: TextStyle(fontSize: 17.0, color: Color.fromRGBO(38, 38, 38, 1.0), fontWeight: FontWeight.w600),
           display1: TextStyle(fontSize: 22.0, color: Colors.lightGreen[500]),
+          subtitle: TextStyle(fontSize: 14.0, color: Color.fromRGBO(153, 153, 153, 1.0)),
         ),
       ),
       home: HomeM()

@@ -92,6 +92,8 @@ class Address {
   double lat;
   double lng;
   String location;
+  String companyName,city,country;
+
   Address();
   Address.withData(street,houseNumber,extraAddressLine,postCode,lat,lng,location) {
     this.street = street;
@@ -101,5 +103,13 @@ class Address {
     this.lat = lat;
     this.lng = lng;
     this.location = location;
+  }
+  Address.forOrder(companyName,street,houseNumber,city,postCode,country){
+    this.companyName = companyName;
+    this.street = street;
+    this.houseNumber = houseNumber;
+    this.city = city;
+    this.postCode = postCode;
+    this.country = country;
   }
 }

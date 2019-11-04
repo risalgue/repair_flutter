@@ -29,6 +29,7 @@ class CreateCompanyState extends State<CreateCompanyV> {
   DatabaseHelper helper = DatabaseHelper.instance;
   CreateCompanyState(this.company,this.newCompany);
   final weblinkController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -37,6 +38,7 @@ class CreateCompanyState extends State<CreateCompanyV> {
     }
   }
   String lastSelectedValue;
+
   void showDemoActionSheet({BuildContext context, Widget child}) {
     showCupertinoModalPopup<String>(
       context: context,
@@ -47,6 +49,7 @@ class CreateCompanyState extends State<CreateCompanyV> {
       }
     });
   }
+
   void showAlertDialogWeblink(BuildContext context) {
     showCupertinoDialog(
         context: context,
@@ -87,6 +90,7 @@ class CreateCompanyState extends State<CreateCompanyV> {
         )
     );
   }
+
   void _onActionSheetPress(BuildContext context)  {
     showDemoActionSheet(
       context: context,
@@ -124,6 +128,7 @@ class CreateCompanyState extends State<CreateCompanyV> {
       _image = image;
     });
   }
+
   Future getImageFromGallery() async {
     final File image = await ImagePicker.pickImage(source: ImageSource.gallery);
     final directory = await getApplicationDocumentsDirectory();
@@ -135,11 +140,13 @@ class CreateCompanyState extends State<CreateCompanyV> {
 
     });
   }
+
   _saveCompany() async {
     company.defaultC = false;
     int id = await helper.insertCompany(company);
     print('inserted row: $id');
   }
+
   Future _downloadImage() async {
     var response = await http.get(weblinkController.text);
     var documentDirectory = await getApplicationDocumentsDirectory();
@@ -154,6 +161,7 @@ class CreateCompanyState extends State<CreateCompanyV> {
       _image = file;
     });
   }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build

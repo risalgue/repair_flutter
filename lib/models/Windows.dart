@@ -7,7 +7,7 @@ final String columnNumber = 'number';
 final String columnSystemDepth = 'systemDepth';
 final String columnProfileSystem = 'profileSystem';
 final String columnDescription = 'description';
-final String columnFile = 'file';
+final String columnFilePath = 'file';
 
 // data model class
 class Windows {
@@ -19,10 +19,20 @@ class Windows {
   String systemDepth;
   String profileSystem;
   String description;
-
+  String filePath;
   Windows();
 
   // convenience constructor to create a Word object
+  Windows.withData(String name, DateTime created,int number,String systemDepth,String profileSystem,String description,String filePath) {
+    this.name = name;
+    this.created = created;
+    this.number = number;
+    this.systemDepth = systemDepth;
+    this.profileSystem = profileSystem;
+    this.description = description;
+    this.filePath = filePath;
+  }
+
   Windows.fromMap(Map<String, dynamic> map) {
     id = map[columnId];
     name = map[columnName];
@@ -32,6 +42,7 @@ class Windows {
     systemDepth = map[columnSystemDepth];
     profileSystem = map[columnProfileSystem];
     description = map[columnDescription];
+    filePath = map[columnFilePath];
   }
 
   // convenience method to create a Map from this Word object
@@ -42,7 +53,8 @@ class Windows {
       columnNumber: number,
       columnSystemDepth: systemDepth,
       columnProfileSystem: profileSystem,
-      columnDescription: description
+      columnDescription: description,
+      columnFilePath: filePath
     };
     if (id != null) {
       map[columnId] = id;

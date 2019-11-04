@@ -45,7 +45,9 @@ class _ArticleIdentificationState extends State<ArticleIdentificationV> {
     print('inserted row: $id');
     this._readAllWindows();
   }
+
   String lastSelectedValue;
+
   void showDemoActionSheet({BuildContext context, Widget child}) {
     showCupertinoModalPopup<String>(
       context: context,
@@ -104,7 +106,7 @@ class _ArticleIdentificationState extends State<ArticleIdentificationV> {
         iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
         backgroundColor: Colors.white,
         actionsIconTheme: IconThemeData(color: Theme.of(context).primaryColor),
-        title: Text("Article Identification",style: Theme.of(context).textTheme.body1,),
+        title: Text("Article Identification",style: Theme.of(context).textTheme.body1),
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios),
           onPressed: () {
@@ -117,18 +119,6 @@ class _ArticleIdentificationState extends State<ArticleIdentificationV> {
             onPressed: (){},
             icon: Icon(Icons.image),
           ),
-//          IconButton(
-//            onPressed: () {
-//              _readAllWindows();
-//            },
-//            icon: Icon(Icons.update),
-//          ),
-          IconButton(
-            onPressed: () {
-              _saveWindows();
-            },
-            icon: Icon(Icons.save),
-          )
         ],
       ),
 
@@ -225,7 +215,11 @@ class _ArticleIdentificationState extends State<ArticleIdentificationV> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => IdentificationTypeV()),
-                    );
+                    ).then((_){
+                      setState(() {
+                        _readAllWindows();
+                      });
+                    });
                   },
                 ),
                 new InkWell(

@@ -1,15 +1,200 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:repairservices/ArticleBookMarkV.dart';
+import 'package:repairservices/ArticleInCart.dart';
+import 'package:repairservices/ProfileV.dart';
+import 'package:repairservices/Utils/ISClient.dart';
+import 'package:repairservices/database_helpers.dart';
+//import 'package:shared_preferences/shared_preferences.dart';
 import 'Login.dart';
 import 'ArticleIdentification.dart';
 import 'CompanyProfile.dart';
 import 'ArticleList.dart';
 
-class HomeM extends StatelessWidget {
-  const HomeM();
+
+class HomeM extends StatefulWidget {
+
+  @override
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    return HomeState();
+  }
+
+}
+class HomeState extends State<HomeM> {
+  DatabaseHelper helper = DatabaseHelper.instance;
+  bool loggued = false;
+  int cantProductsInCart = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    ISClientO.instance.isTokenAvailable().then((bool loggued) {
+      this.loggued = loggued;
+      setState(() {});
+    });
+    _readAllProductsInCart();
+  }
+
+  _readAllProductsInCart() async {
+    final productList = await helper.queryAllProducts(true);
+    debugPrint('Cant products in Cart: ${productList.length}');
+    this.setState((){
+      this.cantProductsInCart = productList.length;
+    });
+  }
+
+  Widget _displayGridItem(String value, String imageUrl, Function action) {
+    return new GestureDetector(
+        onTap: action,
+        child: new Container(
+          child: new Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Image.asset(
+                imageUrl,
+              ),
+              new Container(
+                child: new Text(
+                  value,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 18.0,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w400,
+
+                  ),
+                ),
+                margin: EdgeInsets.only(top: 26),
+              )
+            ],
+          ),
+        )
+    );
+  }
+
+  Widget _profileButton(){
+      if (loggued) {
+        return GestureDetector(
+          onTap: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => Profile()));
+          },
+          child: Image.asset(
+            'assets/user-icon.png',
+            height: 25,
+          ),
+        );
+      }
+      else {
+        return Container();
+      }
+  }
+
+  Widget _loginBt() {
+    if (!loggued) {
+      return Padding(
+          padding: EdgeInsets.all(16),
+          child: GestureDetector(
+            child: Container(
+                height: 30,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5.0),
+                  color: Theme.of(context).primaryColor,
+                ),
+                child: Center(
+                  child: Text(
+                    "Log In",
+                    style: TextStyle(
+                        fontSize: 17,
+                        color: Colors.white
+                    ),
+                  ),
+                )
+            ),
+            onTap: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context) => LoginV())).then((value){
+                ISClientO.instance.isTokenAvailable().then((bool loggued) {
+                  this.loggued = loggued;
+                  setState(() {});
+                });
+              });
+            },
+          )
+
+      );
+    }
+    else {
+      return Container(height: 0);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
+    final screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
+    final topButtonPadding = screenHeight * 0.030;
+    final bottomButtonPadding = screenHeight * 0.020;
+
+    Widget searchBar(BuildContext context) {
+      return new Container (
+          height: 56.0,
+          color: Colors.grey,
+          child: Center(
+            child: Container(
+                width: screenWidth - 16.0,
+                height: 40,
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(14.0)
+                ) ,
+                child: GestureDetector(
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => ArticleListV())).then((value){
+                      ISClientO.instance.isTokenAvailable().then((bool loggued){
+                        this.loggued = loggued;
+                        _readAllProductsInCart();
+                        setState(() {});
+                      });
+                    });
+                  },
+                  child: Row(
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.only(left: 16),
+                        child: Icon(
+                            Icons.search,
+                            color: Colors.grey
+                        ),
+                      ),
+                      new Text(
+                        "SearchBar",
+                        style: const TextStyle(
+                          fontSize: 17,
+                          color: Colors.grey,
+                          fontWeight: FontWeight.normal,
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(left: screenWidth - 190),
+                        width: 40,
+                        height: 40,
+                        child: InkWell(
+                          child: Image.asset(
+                            'assets/qrCodeGrey.png',
+                          ),
+                          onTap: (){
+                            debugPrint('QRCode Pressed');
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+            ),
+          )
+      );
+    }
+
     final divider = Container(
       color: Color.fromRGBO(0, 0, 0, 0.3),
       height: 1,
@@ -32,23 +217,59 @@ class HomeM extends StatelessWidget {
           actions: <Widget>[
             GestureDetector(
               onTap: () {
-                debugPrint('Car button taped');
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ArticleInCart())
+                ).then((value){
+                  ISClientO.instance.isTokenAvailable().then((bool loggued) {
+                    this.loggued = loggued;
+                    setState(() {});
+                  });
+                });
               },
-              child: Image.asset(
-                'assets/shopping-cart.png',
-                height: 25,
-              ),
+                child: Container(
+                  margin: EdgeInsets.only(right: this.loggued ? 0 : 8),
+                  child: Center(
+                    child: new Stack(
+                        children: <Widget>[
+                          Container(
+                            height: 40,
+                            child: Image.asset(
+                              'assets/shopping-cart.png',
+                              height: 25,
+                            ),
+                          ),
 
+                          new Positioned(
+                            right: 0,
+                            child: new Container(
+                                padding: EdgeInsets.all(1),
+                                decoration: new BoxDecoration(
+                                  color: Colors.red,
+                                  borderRadius: BorderRadius.circular(9),
+                                ),
+                                constraints: BoxConstraints(
+                                  minWidth: 18,
+                                  minHeight: 18,
+                                ),
+                                child: Center(
+                                  child: new Text(
+                                    '$cantProductsInCart',
+                                    style: new TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 12,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                )
+                            ),
+                          )
+                        ]
+                    ),
+                  )
+                )
             ),
-            GestureDetector(
-              onTap: () {
-                debugPrint('Profile button taped');
-              },
-              child: Image.asset(
-                'assets/user-icon.png',
-                height: 25,
-              ),
-            ),
+            _profileButton()
           ],
         ),
 
@@ -145,10 +366,13 @@ class HomeM extends StatelessWidget {
                   ],
                 ),
                 onTap: () {
-                  // Update the state of the app
-                  // ...
-                  // Then close the drawer
                   Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ArticleBookMark()),
+                  ).then((_){
+                    _readAllProductsInCart();
+                  });
                 },
               ),
               divider,
@@ -360,20 +584,32 @@ class HomeM extends StatelessWidget {
                     Container(
                       margin: EdgeInsets.only(left: 16),
                       child: Text(
-                        'Log In',
-                        style: TextStyle(
-                          color: Color.fromRGBO(38, 38, 38, 1.0),
-                          fontSize: 17
-                        )
+                          !loggued ? 'Log In' : "Log Off",
+                          style: TextStyle(
+                              color: Color.fromRGBO(38, 38, 38, 1.0),
+                              fontSize: 17
+                          )
                       ),
                     )
                   ],
                 ),
                 onTap: () {
-                  // Update the state of the app
-                  // ...
-                  // Then close the drawer
                   Navigator.pop(context);
+                  if (!loggued) {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => LoginV())).then((value){
+                      ISClientO.instance.isTokenAvailable().then((bool loggued) {
+                        this.loggued = loggued;
+                        setState(() {});
+                      });
+                    });
+                  }
+                  else {
+                      ISClientO.instance.clearToken().then((_){
+                        setState(() {
+                          this.loggued = false;
+                        });
+                      });
+                  }
                 },
               ),
               divider,
@@ -381,291 +617,124 @@ class HomeM extends StatelessWidget {
           ),
         ),
 
-        body: new HomeBody()
-    );
-  }
-
-}
-class HomeBody extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-
-
-//    void showAlertDialog(BuildContext context) {
-//      showCupertinoDialog(
-//          context: context,
-//          builder: (BuildContext context ) => CupertinoAlertDialog(
-//            title: const Text("New Alert for you"),
-//            actions: <Widget>[
-//              CupertinoDialogAction(
-//                child: const Text("Nope"),
-//                isDestructiveAction: true,
-//                onPressed: () {
-//                  Navigator.pop(context);
-//                },
-//              ),
-//              CupertinoDialogAction(
-//                child: const Text("Absolutly"),
-//                isDefaultAction: true,
-//                onPressed: () {
-//                  Navigator.pop(context);
-//                },
-//              )
-//            ],
-//          )
-//      );
-//    }
-
-//    final buttonStyle = BoxDecoration(
-//      border: Border.all(
-//        color: Colors.grey,
-//        width: 1.0,
-//      )
-//    );
-    final screenHeight = MediaQuery.of(context).size.height;
-    final screenWidth = MediaQuery.of(context).size.width;
-    final topButtonPadding = screenHeight * 0.030;
-    final bottomButtonPadding = screenHeight * 0.020;
-//    final buttonBorderColor = Border.all(color: Color.fromARGB(100, 191, 191, 191),width: 1);
-
-    Widget _displayGridItem(String value, String imageUrl, Function action) {
-      return new GestureDetector(
-          onTap: action,
-          child: new Container(
-            child: new Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Image.asset(
-                  imageUrl,
-                ),
-                new Container(
-                  child: new Text(
-                    value,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      fontSize: 18.0,
-                      color: Colors.black,
-                      fontWeight: FontWeight.w400,
-
+        body: Scaffold (
+            body: new Container(
+              child: Column (
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  searchBar(context),
+                  Expanded(
+                    child: Column(
+                      children: <Widget>[
+                        Row(
+                          children: <Widget>[
+                            Expanded(
+                                child: Container(
+                                  child: Padding(
+                                    padding: EdgeInsets.only(top: topButtonPadding, bottom:bottomButtonPadding),
+                                    child: _displayGridItem("Article Identification\nService",'assets/article-identification.png', (){
+                                      final widget = ArticleIdentificationV();
+                                      Route route = CupertinoPageRoute(builder: (context) => widget, settings:RouteSettings(name: widget.toStringShort()));
+                                      Navigator.push(context, route);
+                                    }),
+                                  ),
+                                )
+                            ),
+                            Expanded(
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  border: Border(left: BorderSide(color: Color.fromARGB(100, 191, 191, 191),width: 1)),
+                                ),
+                                child: Padding(
+                                  padding: EdgeInsets.only(top: topButtonPadding, bottom:bottomButtonPadding),
+                                  child: _displayGridItem("Article Bookmark\nList",'assets/document-list-green.png',(){
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => ArticleBookMark()),
+                                    ).then((_) {
+                                      _readAllProductsInCart();
+                                    });
+                                  }),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Container(
+                          color: Color.fromARGB(100, 191, 191, 191),
+                          height: 1,
+                          width: screenWidth,
+                        ),
+                        Row(
+                          children: <Widget>[
+                            Expanded(
+                                child: Container(
+                                  child: Padding(
+                                    padding: EdgeInsets.only(top: topButtonPadding, bottom:bottomButtonPadding),
+                                    child: _displayGridItem("Project\nDocumentation",'assets/documentGrey.png',(){}),
+                                  ),
+                                )
+                            ),
+                            Expanded(
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  border: Border(left: BorderSide(color: Color.fromARGB(100, 191, 191, 191),width: 1)),
+                                ),
+                                child: Padding(
+                                  padding: EdgeInsets.only(top: topButtonPadding, bottom:bottomButtonPadding),
+                                  child: _displayGridItem("Docu Center \n",'assets/docucenter.png',(){}),
+                                ),
+                              ),
+                              flex: 1,
+                            ),
+                          ],
+                        ),
+                        Container(
+                          color: Color.fromARGB(100, 191, 191, 191),
+                          height: 1,
+                          width: screenWidth,
+                        ),
+                        Row(
+                          children: <Widget>[
+                            Expanded(
+                                child: Container(
+                                  child: Padding(
+                                    padding: EdgeInsets.only(top: topButtonPadding, bottom:bottomButtonPadding),
+                                    child: _displayGridItem("Company profile\n",'assets/buildingGreenHome.png',() {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(builder: (context) => CompanyProfileV())
+                                      );
+                                    }),
+                                  ),
+                                )
+                            ),
+                            Expanded(
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    border: Border(left: BorderSide(color: Color.fromARGB(100, 191, 191, 191),width: 1)),
+                                  ),
+                                  child: Padding(
+                                    padding: EdgeInsets.only(top: topButtonPadding, bottom:bottomButtonPadding),
+                                    child: _displayGridItem("Service / FAQ\n",'assets/informationGreen.png',(){}),
+                                  ),
+                                )
+                            ),
+                          ],
+                        ),
+                        Container(
+                          color: Color.fromARGB(100, 191, 191, 191),
+                          height: 1,
+                          width: screenWidth,
+                        )
+                      ],
                     ),
                   ),
-                  margin: EdgeInsets.only(top: 26),
-                )
-              ],
-            ),
-          )
-      );
-    }
-
-    Widget searchBar(BuildContext context) {
-      return new Container (
-          height: 56.0,
-          color: Colors.grey,
-          child: Center(
-            child: Container(
-                width: screenWidth - 16.0,
-                height: 40,
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(14.0)
-                ) ,
-                child: GestureDetector(
-                  onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => ArticleListV()));
-                  },
-                  child: Row(
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.only(left: 16),
-                        child: Icon(
-                            Icons.search,
-                            color: Colors.grey
-                        ),
-                      ),
-                      new Text(
-                        "SearchBar",
-                        style: const TextStyle(
-                          fontSize: 17,
-                          color: Colors.grey,
-                          fontWeight: FontWeight.normal,
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(left: screenWidth - 190),
-                        width: 40,
-                        height: 40,
-                        child: InkWell(
-                          child: Image.asset(
-                            'assets/qrCodeGrey.png',
-                          ),
-                          onTap: (){
-                            debugPrint('QRCode Pressed');
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                )
-            ),
-          )
-      );
-    }
-
-//    Widget gridSection = new Expanded(
-//      flex: 1,
-//      child: new GridView.count(
-//        crossAxisCount: 2,
-//        childAspectRatio: 1.0,
-//        mainAxisSpacing: 0.0,
-//        crossAxisSpacing: 0.0,
-//        children: <Widget>[
-//          _displayGridItem("Article Identification\nService",'assets/article-identification.png'),
-//          _displayGridItem("Article Bookmark\nList",'assets/article-identification.png'),
-//          _displayGridItem("Project\nDocumentation",'assets/article-identification.png'),
-//          _displayGridItem("Docu Center",'assets/article-identification.png'),
-//          _displayGridItem("Company profile",'assets/article-identification.png'),
-//          _displayGridItem("Service / FAQ",'assets/article-identification.png'),
-//        ]
-//      )
-//    );
-
-    Widget loginBt = Padding(
-        padding: EdgeInsets.all(16),
-        child: GestureDetector(
-          child: Container(
-              height: 30,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5.0),
-                color: Theme.of(context).primaryColor,
-              ),
-              child: Center(
-                child: Text(
-                  "Log In",
-                  style: TextStyle(
-                      fontSize: 17,
-                      color: Colors.white
-                  ),
-                ),
-              )
-          ),
-          onTap: (){
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => LoginV()),
-            );
-          },
-        )
-
-    );
-
-    return Scaffold (
-        body: new Container(
-//        height: MediaQuery.of(context).size.height,
-//        color: Colors.redAccent,
-          child: Column (
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              searchBar(context),
-              Row(
-                children: <Widget>[
-                  Expanded(
-                      child: Container(
-                        child: Padding(
-                          padding: EdgeInsets.only(top: topButtonPadding, bottom:bottomButtonPadding),
-                          child: _displayGridItem("Article Identification\nService",'assets/article-identification.png', (){
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => ArticleIdentificationV()),
-                            );
-                          }),
-                        ),
-                      )
-                  ),
-                  Expanded(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border(left: BorderSide(color: Color.fromARGB(100, 191, 191, 191),width: 1)),
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.only(top: topButtonPadding, bottom:bottomButtonPadding),
-                        child: _displayGridItem("Article Bookmark\nList",'assets/document-list-green.png',(){}),
-                      ),
-                    ),
-                  ),
+                  _loginBt()
                 ],
               ),
-              Container(
-                color: Color.fromARGB(100, 191, 191, 191),
-                height: 1,
-                width: screenWidth,
-              ),
-              Row(
-                children: <Widget>[
-                  Expanded(
-                      child: Container(
-                        child: Padding(
-                          padding: EdgeInsets.only(top: topButtonPadding, bottom:bottomButtonPadding),
-                          child: _displayGridItem("Project\nDocumentation",'assets/documentGrey.png',(){}),
-                        ),
-                      )
-                  ),
-                  Expanded(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border(left: BorderSide(color: Color.fromARGB(100, 191, 191, 191),width: 1)),
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.only(top: topButtonPadding, bottom:bottomButtonPadding),
-                        child: _displayGridItem("Docu Center \n",'assets/docucenter.png',(){}),
-                      ),
-                    ),
-                    flex: 1,
-                  ),
-                ],
-              ),
-              Container(
-                color: Color.fromARGB(100, 191, 191, 191),
-                height: 1,
-                width: screenWidth,
-              ),
-              Row(
-                children: <Widget>[
-                  Expanded(
-                      child: Container(
-                        child: Padding(
-                          padding: EdgeInsets.only(top: topButtonPadding, bottom:bottomButtonPadding),
-                          child: _displayGridItem("Company profile\n",'assets/buildingGreenHome.png',() {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => CompanyProfileV())
-                            );
-                          }),
-                        ),
-                      )
-                  ),
-                  Expanded(
-                      child: Container(
-                        decoration: BoxDecoration(
-                          border: Border(left: BorderSide(color: Color.fromARGB(100, 191, 191, 191),width: 1)),
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.only(top: topButtonPadding, bottom:bottomButtonPadding),
-                          child: _displayGridItem("Service / FAQ\n",'assets/informationGreen.png',(){}),
-                        ),
-                      )
-                  ),
-                ],
-              ),
-              Container(
-                color: Color.fromARGB(100, 191, 191, 191),
-                height: 1,
-                width: screenWidth,
-              ),
-              loginBt
-            ],
-          ),
+            )
         )
     );
   }
