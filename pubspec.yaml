@@ -11,7 +11,7 @@ description: RepairService for Flutter
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.5+1
+version: 1.0.7+1
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
@@ -33,7 +33,11 @@ dependencies:
   modal_progress_hud: ^0.1.3
   intl: ^0.16.0
   file_picker: ^1.4.2
-
+#  webview_flutter: ^0.3.15+1
+  flutter_html_to_pdf: ^0.5.2
+  flutter_full_pdf_viewer: ^1.0.6
+#  flutter_email_sender: ^2.2.0
+  flutter_mailer: ^0.4.1+2
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -107,6 +111,47 @@ flutter:
     - assets/lockDimensionPage1.png
     - assets/lockDimensionPage2.png
     - assets/lockDimensionPage3.png
+    - assets/lockType1.png
+    - assets/lockType2.png
+    - assets/lockType3.png
+    - assets/lockType4.png
+    - assets/selectedSquare.png
+    - assets/facePlateType1.png
+    - assets/facePlateType2.png
+    - assets/facePlateType3.png
+    - assets/facePlateType4.png
+    - assets/facePlateFixing1.png
+    - assets/facePlateFixing2.png
+    - assets/multipointLocking1.png
+    - assets/multipointLocking2.png
+    - assets/multipointLocking3.png
+    - assets/multipointLocking4.png
+    - assets/multipointLocking5.png
+    - assets/multipointLocking6.png
+    - assets/multipointLocking7.png
+    - assets/multipointLocking8.png
+    - assets/multipointLocking9.png
+    - assets/multipointLocking10.png
+    - assets/multipointLocking11.png
+    - assets/hingeDimension.png
+    - assets/hingeDimensionBarril.png
+    - assets/surfaceType1.png
+    - assets/surfaceType2.png
+    - assets/surfaceType3.png
+    - assets/surfaceType4.png
+    - assets/surfaceType5.png
+    - assets/whiteSurfaceDetailsIm.png
+    - assets/slidingDirectionOpening1.png
+    - assets/slidingDirectionOpening2.png
+    - assets/slidingDirectionOpening3.png
+    - assets/slidingDirectionOpening4.png
+    - assets/slidingDimension.png
+    - assets/articleDoorLock.html
+    - assets/articleDoorHinge.html
+    - assets/articleSliding.html
+    - assets/article3.html
+    - assets/articleWindows.html
+    - assets/repairService.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 

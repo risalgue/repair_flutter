@@ -62,6 +62,27 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0"
+  flutter_full_pdf_viewer:
+    dependency: "direct main"
+    description:
+      name: flutter_full_pdf_viewer
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.6"
+  flutter_html_to_pdf:
+    dependency: "direct main"
+    description:
+      name: flutter_html_to_pdf
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.5.2"
+  flutter_mailer:
+    dependency: "direct main"
+    description:
+      name: flutter_mailer
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.4.1+2"
   flutter_test:
     dependency: "direct dev"
     description: flutter

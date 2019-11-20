@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:repairservices/DoorHingeDimension.dart';
 import 'package:repairservices/LockDimensions.dart';
 
 class DoorFitting extends StatelessWidget {
@@ -55,7 +56,7 @@ class DoorFitting extends StatelessWidget {
                           )
                         ],
                       ),
-//                      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => WindowsGeneralData(TypeFitting.sunShading))),
+                      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => DoorHingeDimension())),
                     ),
                     GestureDetector(
                       child: Column(

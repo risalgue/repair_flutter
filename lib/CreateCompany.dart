@@ -56,8 +56,8 @@ class CreateCompanyState extends State<CreateCompanyV> {
         builder: (BuildContext context ) => CupertinoAlertDialog(
           title: new Text('Write de url of your logo'),
           content: new Container(
-            margin: EdgeInsets.only(top: 16),
-            child: new CupertinoTextField(
+              margin: EdgeInsets.only(top: 16),
+              child: new CupertinoTextField(
                 textAlign: TextAlign.left,
                 expands: false,
                 style: Theme.of(context).textTheme.body1,
@@ -66,18 +66,18 @@ class CreateCompanyState extends State<CreateCompanyV> {
                 controller: weblinkController,
                 placeholder: 'https://www.mycompany.com/logo.png',
 //                placeholderStyle: TextStyle(color: Colors.grey,fontSize: 14),
-            )
+              )
           ),
           actions: <Widget>[
             CupertinoDialogAction(
-              child: new Text(
-                  'Download',
-                  style: TextStyle(color: Theme.of(context).primaryColor)),
-              isDefaultAction: true,
-              onPressed: () {
-                _downloadImage();
-                Navigator.pop(context);
-              }
+                child: new Text(
+                    'Download',
+                    style: TextStyle(color: Theme.of(context).primaryColor)),
+                isDefaultAction: true,
+                onPressed: () {
+                  _downloadImage();
+                  Navigator.pop(context);
+                }
             ),
             CupertinoDialogAction(
               child: new Text("Cancel"),

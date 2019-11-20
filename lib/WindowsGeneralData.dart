@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:repairservices/ArticleWebPreview.dart';
 import 'package:repairservices/GenericSelection.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:repairservices/database_helpers.dart';
@@ -34,7 +35,7 @@ class WindowsGeneralDataState extends State<WindowsGeneralData> {
   final TypeFitting typeFitting;
   DatabaseHelper helper = DatabaseHelper.instance;
   File image;
-  bool isImage;
+  bool isImage = false;
   String filePath;
   bool isSunShading;
 
@@ -261,13 +262,15 @@ class WindowsGeneralDataState extends State<WindowsGeneralData> {
   }
 
   _saveArticle() async {
-    final windows = Windows.withData(_getNameByFitting(), DateTime.now(), numberCtr.text != '' ? int.parse(numberCtr.text) : 0,
-        systemCtr.text, profileCtr.text, descriptionCtr.text, filePath);
+    debugPrint('saving windows');
+    final windows = Windows.withData(_getNameByFitting(), DateTime.now(), yearCtr.text, numberCtr.text != '' ? int.parse(numberCtr.text) : 0,
+        systemCtr.text, profileCtr.text, descriptionCtr.text, filePath,isImage);
     int id = await helper.insert(windows);
     print('inserted row: $id');
     if(id!=null) {
-      debugPrint('poping');
-      Navigator.of(context).popUntil((route) => route.settings.name == "ArticleIdentificationV");
+      Navigator.push(context, MaterialPageRoute(builder: (context)=>ArticleWebPreview(windows)));
+//      debugPrint('poping');
+//      Navigator.of(context).popUntil((route) => route.settings.name == "ArticleIdentificationV");
     }
   }
 

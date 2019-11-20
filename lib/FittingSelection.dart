@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:repairservices/DoorFitting.dart';
+import 'package:repairservices/SlidingGeneralData.dart';
 import 'package:repairservices/WindowsGeneralData.dart';
 
 class FittingSelection extends StatelessWidget {
@@ -28,7 +29,7 @@ class FittingSelection extends StatelessWidget {
            Padding(
              padding: EdgeInsets.symmetric(vertical: 16,horizontal: 10),
              child: Row(
-               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+               mainAxisAlignment: MainAxisAlignment.spaceAround,
                children: <Widget>[
                  GestureDetector(
                    child: Column(
@@ -68,6 +69,9 @@ class FittingSelection extends StatelessWidget {
                        )
                      ],
                    ),
+                   onTap: () {
+                     Navigator.push(context, MaterialPageRoute(builder: (context) => SlidingGeneralData()));
+                   },
                  )
                ],
              ),

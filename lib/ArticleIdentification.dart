@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:repairservices/models/DoorHinge.dart';
+import 'package:repairservices/models/DoorLock.dart';
+import 'package:repairservices/models/Sliding.dart';
 import 'database_helpers.dart';
 import 'package:repairservices/models/Windows.dart';
 import 'IdentificationType.dart';
@@ -14,36 +17,35 @@ class ArticleIdentificationV extends StatefulWidget {
 class _ArticleIdentificationState extends State<ArticleIdentificationV> {
 
   DatabaseHelper helper = DatabaseHelper.instance;
-  List<Windows> articleWindows;
-
+//  List<Windows> articleWindows;
+  List<Fitting> articleList;
   int selected = 0;
-//  _readWindows(int rowId) async {
-//    rowId = 1;
-//    Windows windows = await helper.queryWindows(rowId);
-//    if (windows == null) {
-//      print('read row $rowId: empty');
-//    } else {
-//      print('read row $rowId: ${windows.name} ${windows.created}');
-//    }
-//  }
-  _readAllWindows() async {
-    this.articleWindows = await helper.queryAllWindows();
-    this.setState((){
 
-    });
-    debugPrint(articleWindows.length.toString());
-  }
-  _saveWindows() async {
-    Windows windows = Windows();
-    windows.name = 'Fitting Windows';
-    windows.created = DateTime.now();
-    windows.description = 'My description of the fitting selection article windows';
-    windows.number = 582935892385;
-    windows.systemDepth = '50mm';
-    windows.profileSystem = 'System Serie 50 DPL';
-    int id = await helper.insert(windows);
-    print('inserted row: $id');
-    this._readAllWindows();
+  _readAllWindows() async {
+    articleList = [];
+    final articleWindows = await helper.queryAllWindows();
+    debugPrint('Article Windows ${articleWindows.length.toString()}');
+    for (Windows windows in articleWindows){
+      articleList.add(windows);
+    }
+    final articleDoorLock = await helper.queryAllDoorLock();
+    debugPrint('Article DoorLock ${articleDoorLock.length.toString()}');
+    for (DoorLock doorLock in articleDoorLock){
+      articleList.add(doorLock);
+    }
+    final articleDoorHinge = await helper.queryAllDoorHinge();
+    debugPrint('Article DoorHinge ${articleDoorHinge.length.toString()}');
+    for (DoorHinge doorHinge in articleDoorHinge){
+      articleList.add(doorHinge);
+    }
+    final articleSliding = await helper.queryAllSliding();
+    debugPrint('Article Sliding ${articleSliding.length.toString()}');
+    for (Sliding sliding in articleSliding){
+      articleList.add(sliding);
+    }
+    articleList.sort((a,b) => b.created.compareTo(a.created));
+    debugPrint('article list count: ${articleList.length}');
+    setState(() {});
   }
 
   String lastSelectedValue;
@@ -92,9 +94,7 @@ class _ArticleIdentificationState extends State<ArticleIdentificationV> {
   @override
   void initState() {
     super.initState();
-    this.setState((){
-      _readAllWindows();
-    });
+    _readAllWindows();
   }
 
   @override
@@ -130,18 +130,18 @@ class _ArticleIdentificationState extends State<ArticleIdentificationV> {
 //            padding: EdgeInsets.only(bottom: 65, top: 0, left: 0,right: 0),
 //            margin: EdgeInsets.only(bottom: 65, top: 0, left: 0,right: 0),
             child: new ListView.separated(
-              itemCount: articleWindows == null ? 0 : articleWindows.length,
+              itemCount: articleList == null ? 0 : articleList.length,
               itemBuilder: (BuildContext context, int index){
                 return new Container(
                   color: Color.fromRGBO(243, 243, 243, 1.0),
                   child: new ListTile(
                     leading: Image.asset('assets/productImage.png'),
                     title: Text(
-                        articleWindows[index].name,
+                        articleList[index].name,
                         style:  Theme.of(context).textTheme.body1
                     ),
                     subtitle:  Text(
-                        articleWindows[index].created.month.toString() + "-" + articleWindows[index].created.day.toString() + "-" + articleWindows[index].created.year.toString(),
+                        articleList[index].created.month.toString() + "-" + articleList[index].created.day.toString() + "-" + articleList[index].created.year.toString(),
                         style: Theme.of(context).textTheme.body2
                     ),
                     trailing: Icon(Icons.arrow_forward_ios),
@@ -162,7 +162,7 @@ class _ArticleIdentificationState extends State<ArticleIdentificationV> {
           ),
           new Container(
             margin: EdgeInsets.only(bottom: 0),
-            height: 65,
+            height: 70,
             width: MediaQuery.of(context).size.width,
             color: Theme.of(context).primaryColor,
             child: new Row(

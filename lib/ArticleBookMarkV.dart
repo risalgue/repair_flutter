@@ -335,7 +335,7 @@ class ArticleBookMarkState extends State<ArticleBookMark> {
 
             new Container(
               margin: EdgeInsets.only(bottom: 0),
-              height: 65,
+              height: 70,
               width: MediaQuery.of(context).size.width,
               color: Theme.of(context).primaryColor,
               child: new Row(

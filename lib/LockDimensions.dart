@@ -1,6 +1,14 @@
+import 'dart:io';
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:path_provider/path_provider.dart';
+//import 'package:intl/intl.dart';
+import 'package:repairservices/DoorLockGeneralData.dart';
+import 'package:repairservices/models/DoorLock.dart';
+import 'package:flutter/rendering.dart';
+//import 'dart:typed_data';
 
 class LockDimensions extends StatefulWidget {
 
@@ -10,7 +18,7 @@ class LockDimensions extends StatefulWidget {
   }
 }
 class LockDimensionsState extends State<LockDimensions> {
-  bool filled = false;
+//  bool filled = false;
   PageController pageController;
   FocusNode aNode,bNode,cNode,dNode,eNode,fNode;
   final aCtr = TextEditingController();
@@ -20,6 +28,11 @@ class LockDimensionsState extends State<LockDimensions> {
   final eCtr = TextEditingController();
   final fCtr = TextEditingController();
   final dimensionCtr = TextEditingController();
+  var imageKey1 = new GlobalKey();
+  var imageKey2 = new GlobalKey();
+  var imageKey3 = new GlobalKey();
+  String imagePath1,imagePath2,imagePath3;
+  File dimensionImage1,dimensionImage2,dimensionImage3;
 
   @override
   void initState() {
@@ -98,28 +111,33 @@ class LockDimensionsState extends State<LockDimensions> {
                 child: new Text('OK', style: TextStyle(color: Theme.of(context).primaryColor)),
                 isDefaultAction: true,
                 onPressed: () {
+                  Navigator.pop(context);
                   if (dimensionCtr.text != "" && int.parse(dimensionCtr.text) != 0){
                     switch(dimension){
                       case 'A':
                         aCtr.text = int.parse(dimensionCtr.text).toString();
+                        takeScreenShoot(imageKey1, 1);
                         break;
                       case 'B':
                         bCtr.text = int.parse(dimensionCtr.text).toString();
+                        takeScreenShoot(imageKey1, 1);
                         break;
                       case 'C':
                         cCtr.text = int.parse(dimensionCtr.text).toString();
+                        takeScreenShoot(imageKey1, 1);
                         break;
                       case 'D':
                         dCtr.text = int.parse(dimensionCtr.text).toString();
+                        takeScreenShoot(imageKey2, 2);
                         break;
                       case 'E':
                         eCtr.text = int.parse(dimensionCtr.text).toString();
+                        takeScreenShoot(imageKey2, 2);
                         break;
                       default:
                         fCtr.text = int.parse(dimensionCtr.text).toString();
+                        takeScreenShoot(imageKey3, 3);
                     }
-                    Navigator.pop(context);
-                    setState(() {});
                   }
                   else {
                     Navigator.pop(context);
@@ -139,21 +157,31 @@ class LockDimensionsState extends State<LockDimensions> {
     );
   }
 
-  Widget _checkImage(){
-    if (aCtr.text != "" && bCtr.text != "" && cCtr.text != "" && dCtr.text != "" && eCtr.text != "" && fCtr.text != "") {
-      filled = true;
-      return Image.asset(
-        'assets/checkGreen.png',
-        height: 25,
-      );
-    }
-    else {
-      filled = false;
-      return Image.asset(
-        'assets/checkGrey.png',
-        height: 25,
-      );
-    }
+  takeScreenShoot(GlobalKey key, int dimensionImage) async {
+    setState(() {});
+    await Future.delayed(Duration(seconds: 1),() async {
+      debugPrint('taking screenShoot $dimensionImage');
+      RenderRepaintBoundary boundary = key.currentContext.findRenderObject();
+      var image = await boundary.toImage();
+      var byteData = await image.toByteData(format: ImageByteFormat.png);
+      final buffer = byteData.buffer;
+      final directory = await getApplicationDocumentsDirectory();
+      final path = '${directory.path}/${DateTime.now().toUtc().toIso8601String()}.png';
+
+      File(path).writeAsBytesSync(buffer.asUint8List(byteData.offsetInBytes,byteData.lengthInBytes));
+
+      switch (dimensionImage) {
+        case 1:
+          imagePath1 = path;
+          break;
+        case 2:
+          imagePath2 = path;
+          break;
+        default:
+          imagePath3 = path;
+          break;
+      }
+    });
   }
   @override
   Widget build(BuildContext context) {
@@ -161,155 +189,164 @@ class LockDimensionsState extends State<LockDimensions> {
     List<Widget> pages = [
       //First Page
       Container(
-        color: Colors.white,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            Expanded(
-              child: ListView(
-                children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Container(
-                        width: 320,
-                        height: 344,
-                        margin: EdgeInsets.only(top: 16,bottom: 8),
-                        child: Stack(
-                          children: <Widget>[
-                            Container(
-                              child: Center(
-                                child: Image.asset('assets/lockDimensionPage1.png'),
-                              ),
-                            ),
-                            Positioned(
-                              right: 87,
-                              top: 47,
-                              child: Container(
-                                width: 22,
-                                height: 41,
-                                child: InkWell(
-                                  onTap: () => _changeDimension(context,'A'),
-                                  child: FittedBox(
-                                    child: Text(aCtr.text,style: Theme.of(context).textTheme.body1),
+          color: Colors.white,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Expanded(
+                child: ListView(
+                  children: <Widget>[
+                    RepaintBoundary(
+                      key: imageKey1,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Container(
+                            width: 320,
+                            height: 344,
+                            margin: EdgeInsets.only(top: 16,bottom: 8),
+                            child: Stack(
+                              children: <Widget>[
+                                Container(
+                                  child: Center(
+                                    child: Image.asset('assets/lockDimensionPage1.png'),
                                   ),
                                 ),
-                              ),
-                            ),
-                            Positioned(
-                              right: 55,
-                              top: 94,
-                              child: Container(
-                                width: 24,
-                                height: 61,
-                                child: InkWell(
-                                  onTap: () => _changeDimension(context,'B'),
-                                  child: FittedBox(
-                                    child: Text(bCtr.text,style: Theme.of(context).textTheme.body1),
+                                Positioned(
+                                  right: 87,
+                                  top: 47,
+                                  child: Container(
+                                    width: 22,
+                                    height: 41,
+                                    child: InkWell(
+                                      onTap: () => _changeDimension(context,'A'),
+                                      child: FittedBox(
+                                        child: Text(aCtr.text != "" ? aCtr.text : "A",style: Theme.of(context).textTheme.body1),
+                                      ),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ),
-                            Positioned(
-                              right: 86,
-                              top: 149,
-                              child: Container(
-                                width: 22,
-                                height: 41,
-                                child: InkWell(
-                                  onTap: () => _changeDimension(context,'C'),
-                                    child: FittedBox(
-                                      child: Text(cCtr.text,style: Theme.of(context).textTheme.body1),
-                                    )
+                                Positioned(
+                                  right: 55,
+                                  top: 94,
+                                  child: Container(
+                                    width: 24,
+                                    height: 61,
+                                    child: InkWell(
+                                      onTap: () => _changeDimension(context,'B'),
+                                      child: FittedBox(
+                                        child: Text(bCtr.text != "" ? bCtr.text : "B",style: Theme.of(context).textTheme.body1),
+                                      ),
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            )
-                          ],
+                                Positioned(
+                                  right: 86,
+                                  top: 149,
+                                  child: Container(
+                                    width: 22,
+                                    height: 41,
+                                    child: InkWell(
+                                        onTap: () => _changeDimension(context,'C'),
+                                        child: FittedBox(
+                                          child: Text(cCtr.text != "" ? cCtr.text : "C",style: Theme.of(context).textTheme.body1),
+                                        )
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Divider(height: 1),
+                    Padding(
+                      padding: EdgeInsets.only(left: 16,top: 8),
+                      child: Text('A',style: aCtr.text == "" ? Theme.of(context).textTheme.body1 : Theme.of(context).textTheme.subtitle, textAlign: TextAlign.left),
+                    ),
+                    new Padding(
+                      padding: EdgeInsets.only(left: 16,right: 16),
+                      child: new TextField(
+                        focusNode: aNode,
+                        textAlign: TextAlign.left,
+                        expands: false,
+                        style: Theme.of(context).textTheme.body1,
+                        maxLines: 1,
+                        controller: aCtr,
+                        textInputAction: TextInputAction.next,
+                        keyboardType: TextInputType.number,
+                        onSubmitted: (next){
+                          _changeFocus(context, aNode, bNode);
+                          takeScreenShoot(imageKey1, 1);
+                        },
+                        decoration: InputDecoration.collapsed(
+                            border: InputBorder.none,
+                            hintText: 'mm',
+                            hintStyle: TextStyle(color: Colors.grey,fontSize: 14)
                         ),
                       ),
-                    ],
-                  ),
-                  Divider(height: 1),
-                  Padding(
-                    padding: EdgeInsets.only(left: 16,top: 8),
-                    child: Text('A',style: aCtr.text == "" ? Theme.of(context).textTheme.body1 : Theme.of(context).textTheme.subtitle, textAlign: TextAlign.left),
-                  ),
-                  new Padding(
-                    padding: EdgeInsets.only(left: 16,right: 16),
-                    child: new TextField(
-                      focusNode: aNode,
-                      textAlign: TextAlign.left,
-                      expands: false,
-                      style: Theme.of(context).textTheme.body1,
-                      maxLines: 1,
-                      controller: aCtr,
-                      textInputAction: TextInputAction.next,
-                      keyboardType: TextInputType.number,
-                      onSubmitted: (next){
-                        _changeFocus(context, aNode, bNode);
-                      },
-                      decoration: InputDecoration.collapsed(
-                          border: InputBorder.none,
-                          hintText: 'mm',
-                          hintStyle: TextStyle(color: Colors.grey,fontSize: 14)
+                    ),
+                    Divider(height: 1),
+                    Padding(
+                      padding: EdgeInsets.only(left: 16),
+                      child: Text('B',style: bCtr.text == "" ? Theme.of(context).textTheme.body1 : Theme.of(context).textTheme.subtitle, textAlign: TextAlign.left),
+                    ),
+                    new Padding(
+                      padding: EdgeInsets.only(left: 16,right: 16,top: 0),
+                      child: new TextField(
+                        focusNode: bNode,
+                        textAlign: TextAlign.left,
+                        expands: false,
+                        style: Theme.of(context).textTheme.body1,
+                        maxLines: 1,
+                        controller: bCtr,
+                        textInputAction: TextInputAction.next,
+                        keyboardType: TextInputType.number,
+                        onSubmitted: (next){
+                          _changeFocus(context, bNode, cNode);
+                          takeScreenShoot(imageKey1, 1);
+                        },
+                        decoration: InputDecoration.collapsed(
+                            border: InputBorder.none,
+                            hintText: 'mm',
+                            hintStyle: TextStyle(color: Colors.grey,fontSize: 14)
+                        ),
                       ),
                     ),
-                  ),
-                  Divider(height: 1),
-                  Padding(
-                    padding: EdgeInsets.only(left: 16),
-                    child: Text('B',style: bCtr.text == "" ? Theme.of(context).textTheme.body1 : Theme.of(context).textTheme.subtitle, textAlign: TextAlign.left),
-                  ),
-                  new Padding(
-                    padding: EdgeInsets.only(left: 16,right: 16,top: 0),
-                    child: new TextField(
-                      focusNode: bNode,
-                      textAlign: TextAlign.left,
-                      expands: false,
-                      style: Theme.of(context).textTheme.body1,
-                      maxLines: 1,
-                      controller: bCtr,
-                      textInputAction: TextInputAction.next,
-                      keyboardType: TextInputType.number,
-                      onSubmitted: (next){
-                        _changeFocus(context, bNode, cNode);
-                      },
-                      decoration: InputDecoration.collapsed(
-                          border: InputBorder.none,
-                          hintText: 'mm',
-                          hintStyle: TextStyle(color: Colors.grey,fontSize: 14)
+                    Divider(height: 1),
+                    Padding(
+                      padding: EdgeInsets.only(left: 16),
+                      child: Text('C',style: cCtr.text == "" ? Theme.of(context).textTheme.body1 : Theme.of(context).textTheme.subtitle, textAlign: TextAlign.left),
+                    ),
+                    new Padding(
+                      padding: EdgeInsets.only(left: 16,right: 16,top: 0),
+                      child: new TextField(
+                        focusNode: cNode,
+                        textAlign: TextAlign.left,
+                        expands: false,
+                        style: Theme.of(context).textTheme.body1,
+                        maxLines: 1,
+                        controller: cCtr,
+                        keyboardType: TextInputType.number,
+                        onSubmitted: (_){
+                          setState(() {});
+                          takeScreenShoot(imageKey1, 1);
+                        },
+                        decoration: InputDecoration.collapsed(
+                            border: InputBorder.none,
+                            hintText: 'mm',
+                            hintStyle: TextStyle(color: Colors.grey,fontSize: 14)
+                        ),
                       ),
                     ),
-                  ),
-                  Divider(height: 1),
-                  Padding(
-                    padding: EdgeInsets.only(left: 16),
-                    child: Text('C',style: cCtr.text == "" ? Theme.of(context).textTheme.body1 : Theme.of(context).textTheme.subtitle, textAlign: TextAlign.left),
-                  ),
-                  new Padding(
-                    padding: EdgeInsets.only(left: 16,right: 16,top: 0),
-                    child: new TextField(
-                      focusNode: cNode,
-                      textAlign: TextAlign.left,
-                      expands: false,
-                      style: Theme.of(context).textTheme.body1,
-                      maxLines: 1,
-                      controller: cCtr,
-                      keyboardType: TextInputType.number,
-                      decoration: InputDecoration.collapsed(
-                          border: InputBorder.none,
-                          hintText: 'mm',
-                          hintStyle: TextStyle(color: Colors.grey,fontSize: 14)
-                      ),
-                    ),
-                  ),
-                  Divider(height: 1),
-                ],
-              ),
-            )
-          ],
+                    Divider(height: 1),
+                  ],
+                ),
+              )
+            ],
 
-        )
+          )
       ),
 
       //Second Page
@@ -321,54 +358,56 @@ class LockDimensionsState extends State<LockDimensions> {
               Expanded(
                 child: ListView(
                   children: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Container(
-                          width: 320,
-                          height: 344,
-                          margin: EdgeInsets.only(top: 16,bottom: 8),
-                          child: Stack(
-                            children: <Widget>[
-                              Container(
-                                child: Center(
-                                  child: Image.asset('assets/lockDimensionPage2.png'),
-                                ),
-                              ),
-                              Positioned(
-                                left: 82,
-                                top: 93,
-                                child: Container(
-                                  width: 22,
-                                  height: 60,
-                                  child: InkWell(
-                                    onTap: () => _changeDimension(context,'D'),
-                                    child: FittedBox(
-                                      child: Text(dCtr.text,style: Theme.of(context).textTheme.body1),
-                                    )
+                    RepaintBoundary(
+                      key: imageKey2,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Container(
+                            width: 320,
+                            height: 344,
+                            margin: EdgeInsets.only(top: 16,bottom: 8),
+                            child: Stack(
+                              children: <Widget>[
+                                Container(
+                                  child: Center(
+                                    child: Image.asset('assets/lockDimensionPage2.png'),
                                   ),
                                 ),
-                              ),
-                              Positioned(
-                                right: 56,
-                                bottom: 2,
-                                child: Container(
-                                  width: 54,
-                                  height: 31,
-                                  child: InkWell(
-                                    onTap: () => _changeDimension(context,'E'),
-                                    child: FittedBox(
-                                      child: Text(eCtr.text,style: Theme.of(context).textTheme.body1),
-                                    )
+                                Positioned(
+                                  left: 82,
+                                  top: 93,
+                                  child: Container(
+                                    width: 22,
+                                    height: 60,
+                                    child: InkWell(
+                                        onTap: () => _changeDimension(context,'D'),
+                                        child: FittedBox(
+                                          child: Text(dCtr.text != "" ? dCtr.text : "D",style: Theme.of(context).textTheme.body1),
+                                        )
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
+                                Positioned(
+                                  right: 56,
+                                  bottom: 2,
+                                  child: Container(
+                                    width: 54,
+                                    height: 31,
+                                    child: InkWell(
+                                        onTap: () => _changeDimension(context,'E'),
+                                        child: FittedBox(
+                                          child: Text(eCtr.text != "" ? eCtr.text : "E",style: Theme.of(context).textTheme.body1),
+                                        )
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-
                     Divider(height: 1),
                     Padding(
                       padding: EdgeInsets.only(left: 16),
@@ -387,6 +426,7 @@ class LockDimensionsState extends State<LockDimensions> {
                         keyboardType: TextInputType.number,
                         onSubmitted: (next){
                           _changeFocus(context, dNode, eNode);
+                          takeScreenShoot(imageKey2, 2);
                         },
                         decoration: InputDecoration.collapsed(
                             border: InputBorder.none,
@@ -410,6 +450,10 @@ class LockDimensionsState extends State<LockDimensions> {
                         maxLines: 1,
                         controller: eCtr,
                         keyboardType: TextInputType.number,
+                        onSubmitted: (_){
+                          setState(() {});
+                          takeScreenShoot(imageKey2, 2);
+                        },
                         decoration: InputDecoration.collapsed(
                             border: InputBorder.none,
                             hintText: 'mm',
@@ -435,38 +479,41 @@ class LockDimensionsState extends State<LockDimensions> {
               Expanded(
                 child: ListView(
                   children: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Container(
-                          width: 320,
-                          height: 344,
-                          margin: EdgeInsets.only(top: 16,bottom: 8),
-                          child: Stack(
-                            children: <Widget>[
-                              Container(
-                                child: Center(
-                                  child: Image.asset('assets/lockDimensionPage3.png'),
-                                ),
-                              ),
-                              Positioned(
-                                left: 36,
-                                bottom: 92,
-                                child: Container(
-                                  width: 80,
-                                  height: 41,
-                                  child: InkWell(
-                                    onTap: () => _changeDimension(context,'F'),
-                                    child: FittedBox(
-                                      child: Text(fCtr.text,style: Theme.of(context).textTheme.body1),
-                                    )
+                    RepaintBoundary(
+                      key: imageKey3,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Container(
+                            width: 320,
+                            height: 344,
+                            margin: EdgeInsets.only(top: 16,bottom: 8),
+                            child: Stack(
+                              children: <Widget>[
+                                Container(
+                                  child: Center(
+                                    child: Image.asset('assets/lockDimensionPage3.png'),
                                   ),
                                 ),
-                              ),
-                            ],
+                                Positioned(
+                                  left: 36,
+                                  bottom: 92,
+                                  child: Container(
+                                    width: 80,
+                                    height: 41,
+                                    child: InkWell(
+                                        onTap: () => _changeDimension(context,'F'),
+                                        child: FittedBox(
+                                          child: Text(fCtr.text != "" ? fCtr.text : "F",style: Theme.of(context).textTheme.body1),
+                                        )
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                     Divider(height: 1),
                     Padding(
@@ -483,6 +530,10 @@ class LockDimensionsState extends State<LockDimensions> {
                         maxLines: 1,
                         keyboardType: TextInputType.number,
                         controller: fCtr,
+                        onSubmitted: (_){
+                          setState(() {});
+                          takeScreenShoot(imageKey3, 3);
+                        },
                         decoration: InputDecoration.collapsed(
                             border: InputBorder.none,
                             hintText: 'mm',
@@ -516,9 +567,14 @@ class LockDimensionsState extends State<LockDimensions> {
         ),
         actions: <Widget>[
           InkWell(
-            child: _checkImage(),
+            child: Image.asset(
+              'assets/checkGreen.png',
+              height: 25,
+            ),
             onTap: (){
-              debugPrint('next');
+              final doorLock = DoorLock.withData("Door Lock Fitting", DateTime.now(), aCtr.text, bCtr.text, cCtr.text, dCtr.text, eCtr.text,
+                  fCtr.text,imagePath1,imagePath2,imagePath3);
+              Navigator.push(context, MaterialPageRoute(builder: (context) => DoorLockGeneralData(doorLock)));
             },
           )
         ],
@@ -620,3 +676,4 @@ class Indicator extends StatelessWidget {
     );
   }
 }
+

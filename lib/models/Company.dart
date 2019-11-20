@@ -31,7 +31,7 @@ class Company {
   String textExportEmail;
   bool defaultC;
   Address address = Address();
-
+  static Company currentCompany;
   Company();
 
   // convenience constructor to create a Word object
@@ -82,6 +82,66 @@ class Company {
     }
     return map;
   }
+  String htmlLayoutPreview(){
+    String str = '\\<tr class="information"><td colspan="2" style="padding-bottom: 0px;"><h4 style="color: #c5571f;">Company profile:</h4></td></tr>'
+        '<td><h4>#COMPANYNAME#</h4></td><td class="title"> <img src="#LOGO#" style="width:70%; max-width:70px;"></td><tr class="details">'
+        '<td> #ADITIONALINFORMATION# </td></tr><tr class="detailsc"><td style="padding-bottom: 0px;"> <a style="font-weight:bold;">'
+        'Phone number:</a> #PHONE# </td></tr><tr class="detailsc"><td style="padding-bottom: 0px;"> <a style="font-weight:bold;">Email:'
+        '</a> #EMAIL# </td></tr><tr class="detailsc"><td style="padding-bottom: 0px;"> <a style="font-weight:bold;">Fax</a> #FAX# </td></tr>'
+        '<tr class="detailsc"><td style="padding-bottom: 0px;"> <a style="font-weight:bold;">Webite:</a> #WEBSITE# </td></tr><tr class="detailsc">'
+        '<td style="padding-bottom: 0px;"> <a style="font-weight:bold;">Address:</a> #ADDRESS# </td></tr><tr class="detailsc">'
+        '<td style="padding-bottom: 0px;"> <a style="font-weight:bold;">Company Text:</a> #TEXTEXPORTEMAIL# </td></tr>';
+    if(this.logoPath != null && this.logoPath != ''){
+      str = str.replaceAll("#LOGO#",logoPath);
+    }
+    else {
+      str = str.replaceAll('\\<td class="title"> <img src="#LOGO#" style="width:70%; max-width:70px;"></td>', '');
+    }
+    str = str.replaceAll('#COMPANYNAME#', name);
+    if(additionalInf != null && additionalInf != ''){
+      str = str.replaceAll('#ADITIONALINFORMATION#', additionalInf);
+    }
+    else {
+      str = str.replaceAll('\\<tr class="details"><td> #ADITIONALINFORMATION# </td></tr>', '');
+    }
+    if(phone!=null && phone !=''){
+      str = str.replaceAll('#PHONE#', phone);
+    }
+    else {
+      str = str.replaceAll('\\<tr class="detailsc"><td style="padding-bottom: 0px;"> <a style="font-weight:bold;">Phone number:</a> #PHONE# </td></tr>', '');
+    }
+    if(email!=null && email != ''){
+      str = str.replaceAll('#EMAIL#', email);
+    }
+    else {
+      str = str.replaceAll('\\<tr class="detailsc"><td style="padding-bottom: 0px;"> <a style="font-weight:bold;">Email:</a> #EMAIL# </td></tr>', '');
+    }
+    if(fax != null && fax != ''){
+      str = str.replaceAll('#FAX#', fax);
+    }
+    else {
+      str = str.replaceAll('\\<tr class="detailsc"><td style="padding-bottom: 0px;"> <a style="font-weight:bold;">Fax</a> #FAX# </td></tr>', '');
+    }
+    if(website != null && website !=''){
+      str = str.replaceAll('#WEBSITE#', website);
+    }
+    else {
+      str = str.replaceAll('\\<tr class="detailsc"><td style="padding-bottom: 0px;"> <a style="font-weight:bold;">Webite:</a> #WEBSITE# </td></tr>', '');
+    }
+    if(address != null){
+      str = str.replaceAll('#ADDRESS#', address.completeAddress());
+    }
+    else {
+      str = str.replaceAll('\\<tr class="detailsc"><td style="padding-bottom: 0px;"> <a style="font-weight:bold;">Address:</a> #ADDRESS# </td></tr>', '');
+    }
+    if(textExportEmail != null && textExportEmail !=''){
+      str = str.replaceAll('#TEXTEXPORTEMAIL#', textExportEmail);
+    }
+    else {
+      str = str.replaceAll('\\<tr class="detailsc"><td style="padding-bottom: 0px;"> <a style="font-weight:bold;">Company Text:</a> #TEXTEXPORTEMAIL# </td></tr>', '');
+    }
+    return str;
+  }
 }
 
 class Address {
@@ -111,5 +171,46 @@ class Address {
     this.city = city;
     this.postCode = postCode;
     this.country = country;
+  }
+  String completeAddress(){
+    var address = List<String>();
+
+    if (street != null && street != ""){
+      address.add(street);
+    }
+    if (houseNumber != null) {
+      if (address.length > 0) {
+        address.add(" ${houseNumber}");
+      }
+      else {
+        address.add("${houseNumber}");
+      }
+    }
+    if (extraAddressLine != null && extraAddressLine != "") {
+      if (address.length > 0) {
+        address.add(", ${extraAddressLine}");
+      }
+      else {
+        address.add("${extraAddressLine}");
+      }
+    }
+    if (postCode != null) {
+      if (address.length > 0) {
+        address.add(", ${postCode}");
+      }
+      else {
+        address.add("${postCode}");
+      }
+    }
+    if (location != null && location != "") {
+      if (address.length > 0) {
+        address.add(", ${location}");
+      }
+    }
+    String completeAddressStr = "";
+    for(String text in address) {
+      completeAddressStr += text;
+    }
+    return completeAddressStr;
   }
 }

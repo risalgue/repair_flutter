@@ -5,6 +5,7 @@ import 'package:repairservices/ArticleInCart.dart';
 import 'package:repairservices/ProfileV.dart';
 import 'package:repairservices/Utils/ISClient.dart';
 import 'package:repairservices/database_helpers.dart';
+import 'package:repairservices/models/Company.dart';
 //import 'package:shared_preferences/shared_preferences.dart';
 import 'Login.dart';
 import 'ArticleIdentification.dart';
@@ -34,6 +35,7 @@ class HomeState extends State<HomeM> {
       setState(() {});
     });
     _readAllProductsInCart();
+    _readCompanys();
   }
 
   _readAllProductsInCart() async {
@@ -128,6 +130,14 @@ class HomeState extends State<HomeM> {
     }
   }
 
+  _readCompanys() async {
+    List<Company> companyList = await helper.queryAllCompany();
+    for(Company company in companyList){
+      if(company.defaultC){
+        Company.currentCompany = company;
+      }
+    }
+  }
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;

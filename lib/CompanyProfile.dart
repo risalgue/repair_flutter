@@ -16,19 +16,15 @@ class CompanyProfileState extends State<CompanyProfileV> {
 
   _readValues() async {
     this.companyList = await helper.queryAllCompany();
+    for(Company company in this.companyList){
+      if(company.defaultC){
+        Company.currentCompany = company;
+      }
+    }
     this.setState((){});
     debugPrint("Company count: " + this.companyList.length.toString());
   }
 
-//  _saveCompany() async {
-//    Company company = Company();
-//    company.name = 'My example company';
-//    company.additionalInf = 'This is a example company for test local storage in this device, not the final data';
-//    company.defaultC = false;
-//    int id = await helper.insertCompany(company);
-//    print('inserted row: $id');
-//    this._readValues();
-//  }
   _updateCompany(Company company) async {
     int id = await helper.updateCompany(company);
     print('updated row: $id');
@@ -71,7 +67,6 @@ class CompanyProfileState extends State<CompanyProfileV> {
   }
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: Theme.of(context).primaryColor),

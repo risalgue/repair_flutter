@@ -9,50 +9,7 @@ class CompanyLayoutPreview extends StatelessWidget {
   CompanyLayoutPreview(this.comp);
 
   String _componeAddress() {
-//    String loc = "";
-//    if (comp.address.lat != null && comp.address.lat != 0) {
-//      loc = "${comp.address.lat}, ${comp.address.lng}";
-//    }
-    var address = List<String>();
-
-    if (comp.address.street != null && comp.address.street != ""){
-      address.add(comp.address.street);
-    }
-    if (comp.address.houseNumber != null) {
-      if (address.length > 0) {
-      address.add(" ${comp.address.houseNumber}");
-      }
-      else {
-        address.add("${comp.address.houseNumber}");
-      }
-    }
-    if (comp.address.extraAddressLine != null && comp.address.extraAddressLine != "") {
-      if (address.length > 0) {
-        address.add(", ${comp.address.extraAddressLine}");
-      }
-      else {
-        address.add("${comp.address.extraAddressLine}");
-      }
-    }
-    if (comp.address.postCode != null) {
-      if (address.length > 0) {
-        address.add(", ${comp.address.postCode}");
-      }
-      else {
-        address.add("${comp.address.postCode}");
-      }
-    }
-    if (comp.address.location != null && comp.address.location != "") {
-      if (address.length > 0) {
-        address.add(", ${comp.address.location}");
-      }
-    }
-    String completeAddressStr = "";
-    for(String text in address) {
-      completeAddressStr += text;
-    }
-//    debugPrint(completeAddressStr);
-    return completeAddressStr;
+    return comp.address.completeAddress();
   }
   Image _dislplayImage() {
     if (comp.logoPath != null && comp.logoPath != "") {
