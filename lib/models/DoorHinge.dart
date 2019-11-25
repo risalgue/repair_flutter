@@ -1,4 +1,5 @@
 // database table and column names
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/services.dart';
@@ -118,12 +119,14 @@ class DoorHinge extends Fitting{
   }
   Future<String> getHtmlString(String htmlFile) async {
     String htmlStr = htmlFile;
-    Directory directory = await getApplicationDocumentsDirectory();
-    var dbPath = join(directory.path, "logoImage.png");
+//    Directory directory = await getApplicationDocumentsDirectory();
+//    var dbPath = join(directory.path, "logoImage.png");
     ByteData data = await rootBundle.load("assets/repairService.png");
     List<int> bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
-    await File(dbPath).writeAsBytes(bytes);
-    htmlStr = htmlStr.replaceAll('#LOGO_IMAGE#', 'file://'+dbPath);
+    String logoBase64Image = base64Encode(bytes);
+//    await File(dbPath).writeAsBytes(bytes);
+//    htmlStr = htmlStr.replaceAll('#LOGO_IMAGE#', 'file://'+dbPath);
+    htmlStr = htmlStr.replaceAll('#LOGO_IMAGE#', 'data:image/png;base64, $logoBase64Image');
     htmlStr = htmlStr.replaceAll("#CREATED#", created.month.toString() + '/' + created.day.toString() + '/' + created.year.toString());
     if (Company.currentCompany != null){
       htmlStr = htmlStr.replaceAll('#COMPANYPROFILE#', Company.currentCompany.htmlLayoutPreview());
@@ -148,7 +151,8 @@ class DoorHinge extends Fitting{
     if(hingeType=='Surface-mounted door hinge'){
       htmlStr = htmlStr.replaceAll('#coverCaps#', coverCaps);
       if(doorHingeDetailsIm !=null && doorHingeDetailsIm !=''){
-        htmlStr = htmlStr.replaceAll('#doorHingeDetailsIm#', 'file://'+ await pathSurfaceDetails());
+        String imageBase64 = base64Encode(File(await pathSurfaceDetails()).readAsBytesSync());
+        htmlStr = htmlStr.replaceAll('#doorHingeDetailsIm#', 'data:image/png;base64, $imageBase64');
       }
     }
     else {
@@ -157,7 +161,8 @@ class DoorHinge extends Fitting{
           '<tr class="heading"><td> Cover caps of the door hinge</td><td> <br> </td></tr><tr class="details"><td> #coverCaps# </td></tr>', '');
     }
     if(dimensionSurfaceIm != null && dimensionSurfaceIm != ''){
-      htmlStr = htmlStr.replaceAll('#dimensionSurfaceIm#', 'file://'+dimensionSurfaceIm);
+      String imageBase64 = base64Encode(File(dimensionSurfaceIm).readAsBytesSync());
+      htmlStr = htmlStr.replaceAll('#dimensionSurfaceIm#', 'data:image/png;base64, $imageBase64');
     }
     else {
       htmlStr = htmlStr.replaceAll('<tr class="heading"><td> Dimension Surface </td><td> <br></td></tr><tr class="details"><td> <img src="#dimensionSurfaceIm#" style="width:200%; max-width:400px;"></td></tr>', '');
@@ -178,7 +183,8 @@ class DoorHinge extends Fitting{
         htmlStr = htmlStr.replaceAll('<tr class="heading"><td> System </td><td> <br></td></tr><tr class="details"><td> #systemDoorFrame# </td></tr>', '');
       }
       if(dimensionBarrelIm != null && dimensionBarrelIm != ''){
-        htmlStr = htmlStr.replaceAll('#dimensionBarrelIm#', 'file://'+dimensionBarrelIm);
+        String imageBase64 = base64Encode(File(dimensionBarrelIm).readAsBytesSync());
+        htmlStr = htmlStr.replaceAll('#dimensionBarrelIm#', 'data:image/png;base64, $imageBase64');
       }
       else {
         htmlStr = htmlStr.replaceAll('<tr class="heading"><td> Dimension Barrel </td><td> <br></td></tr>'

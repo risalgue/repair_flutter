@@ -81,7 +81,7 @@ class ArticleInCartState extends State<ArticleInCart> {
   }
 
   _order(){
-    Navigator.push(context, MaterialPageRoute(builder: (context) => ShippingAddress()));
+    Navigator.push(context, CupertinoPageRoute(builder: (context) => ShippingAddress()));
   }
 
   Widget _priceDetails(BuildContext context, int pos) {
@@ -238,7 +238,7 @@ class ArticleInCartState extends State<ArticleInCart> {
             onTap: (){
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => LoginV()),
+                CupertinoPageRoute(builder: (context) => LoginV()),
               ).then((value){
                 ISClientO.instance.isTokenAvailable().then((bool loggued) {
                   this.loggued = loggued;
@@ -415,7 +415,7 @@ class ArticleInCartState extends State<ArticleInCart> {
               ) ,
               child: GestureDetector(
                 onTap: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => ArticleListV()));
+                  Navigator.push(context, CupertinoPageRoute(builder: (context) => ArticleListV()));
                 },
                 child: Row(
                   children: <Widget>[
@@ -490,7 +490,7 @@ class ArticleInCartState extends State<ArticleInCart> {
           IconButton(
             icon: Icon(Icons.add),
             onPressed: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context) => ShippingAddress()));
+              Navigator.push(context, CupertinoPageRoute(builder: (context) => ShippingAddress()));
             },
           )
         ],

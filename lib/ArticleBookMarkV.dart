@@ -13,7 +13,6 @@ import 'database_helpers.dart';
 class ArticleBookMark extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    // TODO: implement createState
     return ArticleBookMarkState();
   }
 
@@ -40,11 +39,11 @@ class ArticleBookMarkState extends State<ArticleBookMark> {
       this.cantProductsInCart = productList.length;
     });
   }
-  _removeProduct(int id){
-    helper.deleteProduct(id,false).then((_) {
-      _readAllProducts();
-    });
-  }
+//  _removeProduct(int id){
+//    helper.deleteProduct(id,false).then((_) {
+//      _readAllProducts();
+//    });
+//  }
 
   @override
   void initState() {
@@ -69,7 +68,7 @@ class ArticleBookMarkState extends State<ArticleBookMark> {
     if (loggued) {
       return GestureDetector(
         onTap: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => Profile()));
+          Navigator.push(context, CupertinoPageRoute(builder: (context) => Profile()));
         },
         child: Image.asset(
           'assets/user-icon.png',
@@ -92,7 +91,7 @@ class ArticleBookMarkState extends State<ArticleBookMark> {
         setState(() {
           _loading = false;
         });
-        Navigator.push(context, MaterialPageRoute(builder: (context) => ArticleDetailsV(product,true))).then((value){
+        Navigator.push(context, CupertinoPageRoute(builder: (context) => ArticleDetailsV(product,true))).then((value){
           ISClientO.instance.isTokenAvailable().then((bool loggued){
             this.loggued = loggued;
             setState(() {});
@@ -141,7 +140,7 @@ class ArticleBookMarkState extends State<ArticleBookMark> {
               ) ,
               child: GestureDetector(
                 onTap: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => ArticleListV())).then((value){
+                  Navigator.push(context, CupertinoPageRoute(builder: (context) => ArticleListV())).then((value){
                     ISClientO.instance.isTokenAvailable().then((bool loggued){
                       this.loggued = loggued;
                       setState(() {});
@@ -211,7 +210,7 @@ class ArticleBookMarkState extends State<ArticleBookMark> {
                 onTap: () {
                   Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => ArticleInCart())
+                      CupertinoPageRoute(builder: (context) => ArticleInCart())
                   );
                 },
                 child: Container(

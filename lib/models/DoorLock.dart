@@ -1,4 +1,5 @@
 // database table and column names
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/services.dart';
@@ -161,12 +162,14 @@ class DoorLock extends Fitting {
   }
   Future<String> getHtmlString(String htmlFile) async {
     String htmlStr = htmlFile;
-    Directory directory = await getApplicationDocumentsDirectory();
-    var dbPath = join(directory.path, "logoImage.png");
+//    Directory directory = await getApplicationDocumentsDirectory();
+//    var dbPath = join(directory.path, "logoImage.png");
     ByteData data = await rootBundle.load("assets/repairService.png");
     List<int> bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
-    await File(dbPath).writeAsBytes(bytes);
-    htmlStr = htmlStr.replaceAll('#LOGO_IMAGE#', 'file://'+dbPath);
+//    await File(dbPath).writeAsBytes(bytes);
+//    htmlStr = htmlStr.replaceAll('#LOGO_IMAGE#', 'file://'+dbPath);
+    String logoBase64Image = base64Encode(bytes);
+    htmlStr = htmlStr.replaceAll('#LOGO_IMAGE#', 'data:image/png;base64, $logoBase64Image');
     htmlStr = htmlStr.replaceAll("#CREATED#", created.month.toString() + '/' + created.day.toString() + '/' + created.year.toString());
     if (Company.currentCompany != null){
       htmlStr = htmlStr.replaceAll('#COMPANYPROFILE#', Company.currentCompany.htmlLayoutPreview());
@@ -174,31 +177,40 @@ class DoorLock extends Fitting {
     else {
       htmlStr = htmlStr.replaceAll('#COMPANYPROFILE#', '');
     }
+    String lockTypeBase64 = base64Encode(File(await pathLockType()).readAsBytesSync());
+    htmlStr = htmlStr.replaceAll('#lockType#', 'data:image/png;base64, $lockTypeBase64');
 
-    htmlStr = htmlStr.replaceAll('#lockType#', 'file://'+ await pathLockType());
-    htmlStr = htmlStr.replaceAll('#facePlateType#', 'file://'+ await pathFacePlateType());
-    htmlStr = htmlStr.replaceAll('#facePlateFixing#', 'file://'+ await pathFacePlateFixing());
+    String facePlateTypeBase64 = base64Encode(File(await pathFacePlateType()).readAsBytesSync());
+    htmlStr = htmlStr.replaceAll('#facePlateType#', 'data:image/png;base64, $facePlateTypeBase64');
+
+    String facePlateFixingBase64 = base64Encode(File(await pathFacePlateFixing()).readAsBytesSync());
+    htmlStr = htmlStr.replaceAll('#facePlateFixing#', 'data:image/png;base64, $facePlateFixingBase64');
+
     if(multipointLocking != null && multipointLocking != ''){
-      htmlStr = htmlStr.replaceAll('#multipointLocking#', 'file://'+ await pathMultipointLocking());
+      String imageBase64 = base64Encode(File(await pathMultipointLocking()).readAsBytesSync());
+      htmlStr = htmlStr.replaceAll('#multipointLocking#', 'data:image/png;base64, $imageBase64');
     }
     else {
       htmlStr = htmlStr.replaceAll('<td style="text-align: center;"> Multi-point locking </td>', '');
       htmlStr = htmlStr.replaceAll('<td style="text-align: center;"> <img src="#multipointLocking#" style="width:100%; max-width:30px;"></td>', '');
     }
     if(dimensionImage1Path != null && dimensionImage1Path != ''){
-      htmlStr = htmlStr.replaceAll('#DIMENSIONIMAGE1#', 'file://'+dimensionImage1Path);
+      String imageBase64 = base64Encode(File(dimensionImage1Path).readAsBytesSync());
+      htmlStr = htmlStr.replaceAll('#DIMENSIONIMAGE1#', 'data:image/png;base64, $imageBase64');
     }
     else {
       htmlStr = htmlStr.replaceAll('<tr><td class="title"><div><img src="#DIMENSIONIMAGE1#" style="width:300%; max-width:300px;position: relative;"></div><td></tr>', '');
     }
     if(dimensionImage2Path != null && dimensionImage2Path != ''){
-      htmlStr = htmlStr.replaceAll('#DIMENSIONIMAGE2#', 'file://'+dimensionImage2Path);
+      String imageBase64 = base64Encode(File(dimensionImage2Path).readAsBytesSync());
+      htmlStr = htmlStr.replaceAll('#DIMENSIONIMAGE2#', 'data:image/png;base64, $imageBase64');
     }
     else {
       htmlStr = htmlStr.replaceAll('<tr><td class="title"><div><img src="#DIMENSIONIMAGE2#" style="width:300%; max-width:300px;position: relative;"></div><td></tr>', '');
     }
     if(dimensionImage3Path != null && dimensionImage3Path != ''){
-      htmlStr = htmlStr.replaceAll('#DIMENSIONIMAGE3#', 'file://'+dimensionImage3Path);
+      String imageBase64 = base64Encode(File(dimensionImage3Path).readAsBytesSync());
+      htmlStr = htmlStr.replaceAll('#DIMENSIONIMAGE3#', 'data:image/png;base64, $imageBase64');
     }
     else {
       htmlStr = htmlStr.replaceAll('<tr><td class="title"><div><img src="#DIMENSIONIMAGE3#" style="width:300%; max-width:300px;position: relative;"></div><td></tr>', '');

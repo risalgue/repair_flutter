@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class GenericSelection extends StatelessWidget {
-  String title = "";
-  List<String> myOptions = [];
+  final String title;
+  final List<String> myOptions;
   GenericSelection(this.title,this.myOptions);
 
   @override

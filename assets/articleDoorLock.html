@@ -97,6 +97,26 @@
                 font-size: small;
                 color:#555;
             }
+            @page {
+              size: A4;
+              margin: 11mm 17mm 17mm 17mm;
+            }
+
+            @media print {
+              footer {
+                position: fixed;
+                bottom: 0;
+              }
+
+              .content-block, p {
+                page-break-inside: avoid;
+              }
+
+              html, body {
+                width: 210mm;
+                height: 320mm;
+              }
+            }
             </style>
             </head>
     <body>
@@ -245,6 +265,8 @@
                 </tbody>
             </table>
         </div>
-        
+        <footer>
+<!--            This is the text that goes at the bottom of every page.-->
+        </footer>
     </body>
 </html>

@@ -109,7 +109,7 @@ class DoorLockDataState extends State<DoorLockData> {
         ],
       ),
       onTap: (){
-        Navigator.push(context, MaterialPageRoute(builder: (context) => GenericSelection(title, options))).then((selectedOption){
+        Navigator.push(context, CupertinoPageRoute(builder: (context) => GenericSelection(title, options))).then((selectedOption){
           setState(() {
             controller.text = selectedOption;
           });
@@ -189,7 +189,7 @@ class DoorLockDataState extends State<DoorLockData> {
     int id = await helper.insertDoorLock(doorLock);
     print('inserted row: $id');
     if(id!=null) {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => ArticleWebPreview(doorLock)));
+      Navigator.push(context, CupertinoPageRoute(builder: (context) => ArticleWebPreview(doorLock)));
     }
   }
 
@@ -263,7 +263,7 @@ class DoorLockDataState extends State<DoorLockData> {
               ),
             ),
             onTap: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context) => DoorLockTypeImage(doorLock.lockType))).then((type){
+              Navigator.push(context, CupertinoPageRoute(builder: (context) => DoorLockTypeImage(doorLock.lockType))).then((type){
                 if (type != null && type != ''){
                   doorLock.lockType = type;
                 }
@@ -296,7 +296,7 @@ class DoorLockDataState extends State<DoorLockData> {
                 ),
               ),
             onTap: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context) => DoorLockFacePlateTypeImage(doorLock.facePlateType))).then((type){
+              Navigator.push(context, CupertinoPageRoute(builder: (context) => DoorLockFacePlateTypeImage(doorLock.facePlateType))).then((type){
                 if (type != null && type != ''){
                   doorLock.facePlateType = type;
                 }
@@ -329,7 +329,7 @@ class DoorLockDataState extends State<DoorLockData> {
                 ),
               ),
             onTap: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context) => DoorLockFacePlateFixingImage(doorLock.facePlateFixing))).then((type){
+              Navigator.push(context, CupertinoPageRoute(builder: (context) => DoorLockFacePlateFixingImage(doorLock.facePlateFixing))).then((type){
                 if (type != null && type != ''){
                   doorLock.facePlateFixing = type;
                 }
@@ -362,7 +362,7 @@ class DoorLockDataState extends State<DoorLockData> {
                 ),
               ),
             onTap: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context) => DoorLockMultipointLocking(doorLock.multipointLocking))).then((type){
+              Navigator.push(context, CupertinoPageRoute(builder: (context) => DoorLockMultipointLocking(doorLock.multipointLocking))).then((type){
                 if (type != null && type != ''){
                   doorLock.multipointLocking = type;
                 }

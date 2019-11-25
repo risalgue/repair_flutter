@@ -6,7 +6,7 @@ import 'package:repairservices/GenericSelection.dart';
 import 'package:repairservices/SlidingComponents.dart';
 import 'package:repairservices/SlidingDimension.dart';
 import 'package:repairservices/SlidingDirectionOpening.dart';
-import 'package:repairservices/database_helpers.dart';
+//import 'package:repairservices/database_helpers.dart';
 import 'package:repairservices/models/Sliding.dart';
 
 class SlidingGeneralData extends StatefulWidget{
@@ -78,7 +78,7 @@ class SlidingGeneralDataState extends State<SlidingGeneralData> {
     if (filled){
       final sliding = Sliding.withData('Sliding system fittings', DateTime.now(), yearCtr.text, materialCtr.text, directionOpeningImPath, materialCtr.text, systemCtr.text, ventOverlapCtr.text,
           tiltSlideCtr.text, components);
-      Navigator.push(context, MaterialPageRoute(builder: (context) => SlidingDimension(sliding)));
+      Navigator.push(context, CupertinoPageRoute(builder: (context) => SlidingDimension(sliding)));
     }
   }
 
@@ -145,7 +145,7 @@ class SlidingGeneralDataState extends State<SlidingGeneralData> {
         ],
       ),
       onTap: (){
-        Navigator.push(context, MaterialPageRoute(builder: (context) => GenericSelection(title, options))).then((selectedOption){
+        Navigator.push(context, CupertinoPageRoute(builder: (context) => GenericSelection(title, options))).then((selectedOption){
           setState(() {
             controller.text = selectedOption;
           });
@@ -230,7 +230,7 @@ class SlidingGeneralDataState extends State<SlidingGeneralData> {
                 )
             ),
             onTap: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context) => SlidingDirectionOpening(directionOpeningImPath))).then((imageStr){
+              Navigator.push(context, CupertinoPageRoute(builder: (context) => SlidingDirectionOpening(directionOpeningImPath))).then((imageStr){
                 setState(() {
                   directionOpeningImPath = imageStr;
                 });
@@ -290,7 +290,7 @@ class SlidingGeneralDataState extends State<SlidingGeneralData> {
                 )
             ),
             onTap: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context) => SlidingComponents(this.components))).then((components){
+              Navigator.push(context, CupertinoPageRoute(builder: (context) => SlidingComponents(this.components))).then((components){
                 setState(() {
                   this.components = components;
                 });

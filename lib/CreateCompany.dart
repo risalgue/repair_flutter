@@ -201,7 +201,7 @@ class CreateCompanyState extends State<CreateCompanyV> {
             ),
             trailing: Icon(Icons.arrow_forward_ios),
             onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => CompanyDataV(this.company)))
+              Navigator.push(context, CupertinoPageRoute(builder: (context) => CompanyDataV(this.company)))
               .then((value) {
                 this.setState(() {
                   debugPrint(company.name);
@@ -234,7 +234,7 @@ class CreateCompanyState extends State<CreateCompanyV> {
             ),
             trailing: Icon(Icons.arrow_forward_ios),
             onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => new CompanyLayoutPreview(company)));
+              Navigator.push(context, CupertinoPageRoute(builder: (context) => new CompanyLayoutPreview(company)));
             },
           ),
           Divider(height: 1),
@@ -245,7 +245,7 @@ class CreateCompanyState extends State<CreateCompanyV> {
             ),
             trailing: Icon(Icons.arrow_forward_ios),
             onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => new CompanyEmailStandartTextV(company)))
+              Navigator.push(context, CupertinoPageRoute(builder: (context) => new CompanyEmailStandartTextV(company)))
                   .then((value) {
                 this.setState(() {
                   debugPrint(company.textExportEmail);

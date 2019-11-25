@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class SlidingComponents extends StatefulWidget {
-  String components;
+  final String components;
 
   SlidingComponents(this.components);
   @override

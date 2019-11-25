@@ -41,7 +41,7 @@ class DoorFitting extends StatelessWidget {
                           )
                         ],
                       ),
-                      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => LockDimensions())),
+                      onTap: () => Navigator.push(context, CupertinoPageRoute(builder: (context) => LockDimensions())),
                     ),
                     GestureDetector(
                       child: Column(
@@ -56,7 +56,7 @@ class DoorFitting extends StatelessWidget {
                           )
                         ],
                       ),
-                      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => DoorHingeDimension())),
+                      onTap: () => Navigator.push(context, CupertinoPageRoute(builder: (context) => DoorHingeDimension())),
                     ),
                     GestureDetector(
                       child: Column(

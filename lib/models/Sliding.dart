@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/services.dart';
@@ -92,12 +93,14 @@ class Sliding extends Fitting {
 
   Future<String> getHtmlString(String htmlFile) async {
     String htmlStr = htmlFile;
-    Directory directory = await getApplicationDocumentsDirectory();
-    var dbPath = join(directory.path, "logoImage.png");
+//    Directory directory = await getApplicationDocumentsDirectory();
+//    var dbPath = join(directory.path, "logoImage.png");
     ByteData data = await rootBundle.load("assets/repairService.png");
     List<int> bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
-    await File(dbPath).writeAsBytes(bytes);
-    htmlStr = htmlStr.replaceAll('#LOGO_IMAGE#', 'file://'+dbPath);
+
+//    await File(dbPath).writeAsBytes(bytes);
+    String logoBase64Image = base64Encode(bytes);
+    htmlStr = htmlStr.replaceAll('#LOGO_IMAGE#', 'data:image/png;base64, $logoBase64Image');
     htmlStr = htmlStr.replaceAll("#CREATED#", created.month.toString() + '/' + created.day.toString() + '/' + created.year.toString());
     if (Company.currentCompany != null){
       htmlStr = htmlStr.replaceAll('#COMPANYPROFILE#', Company.currentCompany.htmlLayoutPreview());
@@ -116,7 +119,10 @@ class Sliding extends Fitting {
     }else {
       htmlStr = htmlStr.replaceAll('<tr class="heading"><td> Fittings manufacturer </td><td> <br></td></tr><tr class="details"><td> #fittingsManufacturer# </td></tr>', '');
     }
-    htmlStr = htmlStr.replaceAll('#directionOfOpeningIm#', 'file://'+ await pathDirectionOpening());
+
+    String directionOpeningBase64 = base64Encode(File(await pathDirectionOpening()).readAsBytesSync());
+    htmlStr = htmlStr.replaceAll('#directionOfOpeningIm#', 'data:image/png;base64, $directionOpeningBase64');
+
     htmlStr = htmlStr.replaceAll('#material#', material);
     if(system != null && system != ''){
       htmlStr = htmlStr.replaceAll('#system#', system);
@@ -133,7 +139,8 @@ class Sliding extends Fitting {
       htmlStr = htmlStr.replaceAll('<tr class="heading"><td> Fittings components to be replaced </td><td> <br></td></tr><tr class="details"><td> #componentsToBeReplace# </td></tr>', '');
     }
     if(dimensionImage1Path != null && dimensionImage1Path != ''){
-      htmlStr = htmlStr.replaceAll('#dimensionImage#', 'file://'+dimensionImage1Path);
+      String dimensionBase64 = base64Encode(File(dimensionImage1Path).readAsBytesSync());
+      htmlStr = htmlStr.replaceAll('#dimensionImage#', 'data:image/png;base64, $dimensionBase64');
     }
     else {
       htmlStr = htmlStr.replaceAll('<tr class="details"><td> <img src="#dimensionImage#" style="width:200%; max-width:400px;"></td></tr>', '');

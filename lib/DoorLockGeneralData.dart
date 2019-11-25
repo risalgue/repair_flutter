@@ -134,7 +134,7 @@ class DoorLockGeneralDataState extends State<DoorLockGeneralData> {
         ],
       ),
       onTap: (){
-        Navigator.push(context, MaterialPageRoute(builder: (context) => GenericSelection(title, options))).then((selectedOption){
+        Navigator.push(context, CupertinoPageRoute(builder: (context) => GenericSelection(title, options))).then((selectedOption){
           setState(() {
             controller.text = selectedOption;
           });
@@ -199,7 +199,7 @@ class DoorLockGeneralDataState extends State<DoorLockGeneralData> {
       doorLock.openingDirection = openingDirCtr.text;
       doorLock.leafDoor= leafCtr.text;
       doorLock.bolt = boltCtr.text;
-      Navigator.push(context, MaterialPageRoute(builder: (context) =>DoorLockData(doorLock)));
+      Navigator.push(context, CupertinoPageRoute(builder: (context) =>DoorLockData(doorLock)));
     }
   }
 

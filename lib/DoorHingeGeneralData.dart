@@ -206,7 +206,7 @@ class DoorHingeGeneralDataState extends State<DoorHingeGeneralData> {
         ],
       ),
       onTap: (){
-        Navigator.push(context, MaterialPageRoute(builder: (context) => GenericSelection(title, options))).then((selectedOption){
+        Navigator.push(context, CupertinoPageRoute(builder: (context) => GenericSelection(title, options))).then((selectedOption){
           setState(() {
             controller.text = selectedOption;
           });
@@ -233,7 +233,7 @@ class DoorHingeGeneralDataState extends State<DoorHingeGeneralData> {
     int id = await helper.insertDoorHinge(doorHinge);
     print('inserted row: $id');
     if(id!=null) {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => ArticleWebPreview(doorHinge)));
+      Navigator.push(context, CupertinoPageRoute(builder: (context) => ArticleWebPreview(doorHinge)));
     }
 
   }
@@ -260,7 +260,7 @@ class DoorHingeGeneralDataState extends State<DoorHingeGeneralData> {
                 )
             ),
             onTap: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context) => DoorHingeSurfaceDetails(
+              Navigator.push(context, CupertinoPageRoute(builder: (context) => DoorHingeSurfaceDetails(
                   this.doorHinge.doorHingeDetailsIm != null ? this.doorHinge.doorHingeDetailsIm : ''
               ))).then((imageStr){
                 setState(() {
@@ -369,7 +369,7 @@ class DoorHingeGeneralDataState extends State<DoorHingeGeneralData> {
                 )
             ),
             onTap: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context) => DoorHingeDimensionBarrel(this.doorHinge))).then((doorHinge){
+              Navigator.push(context, CupertinoPageRoute(builder: (context) => DoorHingeDimensionBarrel(this.doorHinge))).then((doorHinge){
                 this.doorHinge = doorHinge;
               });
             },

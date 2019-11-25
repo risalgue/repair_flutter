@@ -174,7 +174,7 @@ class DoorHingeDimensionState extends State<DoorHingeDimension>{
             ),
             onTap: (){
               final doorHinge = DoorHinge.withData('Door Hinge Fitting', DateTime.now(), aCtr.text, bCtr.text, cCtr.text, dCtr.text, imagePath1);
-              Navigator.push(context, MaterialPageRoute(builder: (context) => DoorHingeGeneralData(doorHinge)));
+              Navigator.push(context, CupertinoPageRoute(builder: (context) => DoorHingeGeneralData(doorHinge)));
             },
           )
         ],
@@ -254,7 +254,7 @@ class DoorHingeDimensionState extends State<DoorHingeDimension>{
                                     height: 44,
                                     child: InkWell(
                                         onTap: (){
-                                          Navigator.push(context, MaterialPageRoute(builder: (context) => GenericSelection('Dimension D', ['22','36']))).then((selectedOption){
+                                          Navigator.push(context, CupertinoPageRoute(builder: (context) => GenericSelection('Dimension D', ['22','36']))).then((selectedOption){
                                             setState(() {
                                               dCtr.text = selectedOption;
                                               takeScreenShoot();
@@ -393,7 +393,7 @@ class DoorHingeDimensionState extends State<DoorHingeDimension>{
                         ],
                       ),
                       onTap: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => GenericSelection('Dimension D', ['22','36']))).then((selectedOption){
+                        Navigator.push(context, CupertinoPageRoute(builder: (context) => GenericSelection('Dimension D', ['22','36']))).then((selectedOption){
                           setState(() {
                             dCtr.text = selectedOption;
                             takeScreenShoot();

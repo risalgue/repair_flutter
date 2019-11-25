@@ -42,7 +42,7 @@ class FittingSelection extends StatelessWidget {
                      ],
                    ),
                    onTap: () {
-                     Navigator.push(context, MaterialPageRoute(builder: (context) => WindowsGeneralData(TypeFitting.windows)));
+                     Navigator.push(context, CupertinoPageRoute(builder: (context) => WindowsGeneralData(TypeFitting.windows)));
                    },
                  ),
                  GestureDetector(
@@ -56,7 +56,7 @@ class FittingSelection extends StatelessWidget {
                      ],
                    ),
                    onTap: () {
-                     Navigator.push(context, MaterialPageRoute(builder: (context) => DoorFitting()));
+                     Navigator.push(context, CupertinoPageRoute(builder: (context) => DoorFitting()));
                    },
                  ),
                  GestureDetector(
@@ -70,7 +70,7 @@ class FittingSelection extends StatelessWidget {
                      ],
                    ),
                    onTap: () {
-                     Navigator.push(context, MaterialPageRoute(builder: (context) => SlidingGeneralData()));
+                     Navigator.push(context, CupertinoPageRoute(builder: (context) => SlidingGeneralData()));
                    },
                  )
                ],
@@ -92,7 +92,7 @@ class FittingSelection extends StatelessWidget {
                        )
                      ],
                    ),
-                   onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => WindowsGeneralData(TypeFitting.other))),
+                   onTap: () => Navigator.push(context, CupertinoPageRoute(builder: (context) => WindowsGeneralData(TypeFitting.other))),
                  ),
                  GestureDetector(
                    child: Column(
@@ -107,7 +107,7 @@ class FittingSelection extends StatelessWidget {
                        )
                      ],
                    ),
-                   onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => WindowsGeneralData(TypeFitting.sunShading))),
+                   onTap: () => Navigator.push(context, CupertinoPageRoute(builder: (context) => WindowsGeneralData(TypeFitting.sunShading))),
                  ),
                  GestureDetector(
                    child: Column(

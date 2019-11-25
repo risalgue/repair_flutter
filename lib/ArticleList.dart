@@ -62,7 +62,7 @@ class ArticleListState extends State<ArticleListV> {
         setState(() {
           _loading = false;
         });
-        Navigator.push(context, MaterialPageRoute(builder: (context) => ArticleDetailsV(product,false))).then((value){
+        Navigator.push(context, CupertinoPageRoute(builder: (context) => ArticleDetailsV(product,false))).then((value){
           ISClientO.instance.isTokenAvailable().then((bool loggued){
             this.loggued = loggued;
             setState(() {});
@@ -223,7 +223,7 @@ class ArticleListState extends State<ArticleListV> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => ArticleBookMark()),
+                    CupertinoPageRoute(builder: (context) => ArticleBookMark()),
                   );
                 },
               ),
@@ -272,7 +272,7 @@ class ArticleListState extends State<ArticleListV> {
                   onTap: (){
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => LoginV()),
+                      CupertinoPageRoute(builder: (context) => LoginV()),
                     ).then((value){
                       ISClientO.instance.isTokenAvailable().then((bool loggued){
                         this.loggued = loggued;

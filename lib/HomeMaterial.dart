@@ -17,7 +17,6 @@ class HomeM extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    // TODO: implement createState
     return HomeState();
   }
 
@@ -67,7 +66,7 @@ class HomeState extends State<HomeM> {
 
                   ),
                 ),
-                margin: EdgeInsets.only(top: 26),
+                margin: EdgeInsets.only(top: 8),
               )
             ],
           ),
@@ -79,7 +78,7 @@ class HomeState extends State<HomeM> {
       if (loggued) {
         return GestureDetector(
           onTap: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => Profile()));
+            Navigator.push(context, CupertinoPageRoute(builder: (context) => Profile()));
           },
           child: Image.asset(
             'assets/user-icon.png',
@@ -95,7 +94,7 @@ class HomeState extends State<HomeM> {
   Widget _loginBt() {
     if (!loggued) {
       return Padding(
-          padding: EdgeInsets.all(16),
+          padding: EdgeInsets.only(left: 16,right: 16,top: 12,bottom: 26),
           child: GestureDetector(
             child: Container(
                 height: 30,
@@ -114,7 +113,7 @@ class HomeState extends State<HomeM> {
                 )
             ),
             onTap: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context) => LoginV())).then((value){
+              Navigator.push(context, CupertinoPageRoute(builder: (context) => LoginV())).then((value){
                 ISClientO.instance.isTokenAvailable().then((bool loggued) {
                   this.loggued = loggued;
                   setState(() {});
@@ -138,12 +137,13 @@ class HomeState extends State<HomeM> {
       }
     }
   }
+
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
-    final topButtonPadding = screenHeight * 0.030;
-    final bottomButtonPadding = screenHeight * 0.020;
+    final topButtonPadding = screenHeight * 0.025;
+    final bottomButtonPadding = screenHeight * 0.015;
 
     Widget searchBar(BuildContext context) {
       return new Container (
@@ -159,7 +159,7 @@ class HomeState extends State<HomeM> {
                 ) ,
                 child: GestureDetector(
                   onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => ArticleListV())).then((value){
+                    Navigator.push(context, CupertinoPageRoute(builder: (context) => ArticleListV())).then((value){
                       ISClientO.instance.isTokenAvailable().then((bool loggued){
                         this.loggued = loggued;
                         _readAllProductsInCart();
@@ -229,7 +229,7 @@ class HomeState extends State<HomeM> {
               onTap: () {
                 Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => ArticleInCart())
+                    CupertinoPageRoute(builder: (context) => ArticleInCart())
                 ).then((value){
                   ISClientO.instance.isTokenAvailable().then((bool loggued) {
                     this.loggued = loggued;
@@ -284,20 +284,8 @@ class HomeState extends State<HomeM> {
         ),
 
         drawer: Drawer(
-          // Add a ListView to the drawer. This ensures the user can scroll
-          // through the options in the drawer if there isn't enough vertical
-          // space to fit everything.
           child: ListView(
-
-            // Important: Remove any padding from the ListView.
-//            padding: EdgeInsets.only(top: 30),
             children: <Widget>[
-//          DrawerHeader(
-//            child: Text('Drawer Header'),
-//            decoration: BoxDecoration(
-//              color: Colors.blue,
-//            ),
-//          ),
               divider,
               ListTile(
                 title: Row(
@@ -350,7 +338,7 @@ class HomeState extends State<HomeM> {
                   Navigator.pop(context);
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => ArticleIdentificationV()),
+                    CupertinoPageRoute(builder: (context) => ArticleIdentificationV()),
                   );
                 },
               ),
@@ -379,7 +367,7 @@ class HomeState extends State<HomeM> {
                   Navigator.pop(context);
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => ArticleBookMark()),
+                    CupertinoPageRoute(builder: (context) => ArticleBookMark()),
                   ).then((_){
                     _readAllProductsInCart();
                   });
@@ -466,7 +454,7 @@ class HomeState extends State<HomeM> {
                   Navigator.pop(context);
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => CompanyProfileV()),
+                    CupertinoPageRoute(builder: (context) => CompanyProfileV()),
                   );
                 },
               ),
@@ -606,7 +594,7 @@ class HomeState extends State<HomeM> {
                 onTap: () {
                   Navigator.pop(context);
                   if (!loggued) {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => LoginV())).then((value){
+                    Navigator.push(context, CupertinoPageRoute(builder: (context) => LoginV())).then((value){
                       ISClientO.instance.isTokenAvailable().then((bool loggued) {
                         this.loggued = loggued;
                         setState(() {});
@@ -643,7 +631,7 @@ class HomeState extends State<HomeM> {
                                 child: Container(
                                   child: Padding(
                                     padding: EdgeInsets.only(top: topButtonPadding, bottom:bottomButtonPadding),
-                                    child: _displayGridItem("Article Identification\nService",'assets/article-identification.png', (){
+                                    child: _displayGridItem("Article Identification\nService",'assets/articleIdentificationService.png', (){
                                       final widget = ArticleIdentificationV();
                                       Route route = CupertinoPageRoute(builder: (context) => widget, settings:RouteSettings(name: widget.toStringShort()));
                                       Navigator.push(context, route);
@@ -658,10 +646,10 @@ class HomeState extends State<HomeM> {
                                 ),
                                 child: Padding(
                                   padding: EdgeInsets.only(top: topButtonPadding, bottom:bottomButtonPadding),
-                                  child: _displayGridItem("Article Bookmark\nList",'assets/document-list-green.png',(){
+                                  child: _displayGridItem("Article Bookmark\nList",'assets/articleBookmarkList.png',(){
                                     Navigator.push(
                                       context,
-                                      MaterialPageRoute(builder: (context) => ArticleBookMark()),
+                                      CupertinoPageRoute(builder: (context) => ArticleBookMark()),
                                     ).then((_) {
                                       _readAllProductsInCart();
                                     });
@@ -671,18 +659,14 @@ class HomeState extends State<HomeM> {
                             ),
                           ],
                         ),
-                        Container(
-                          color: Color.fromARGB(100, 191, 191, 191),
-                          height: 1,
-                          width: screenWidth,
-                        ),
+                        Divider(height: 1),
                         Row(
                           children: <Widget>[
                             Expanded(
                                 child: Container(
                                   child: Padding(
                                     padding: EdgeInsets.only(top: topButtonPadding, bottom:bottomButtonPadding),
-                                    child: _displayGridItem("Project\nDocumentation",'assets/documentGrey.png',(){}),
+                                    child: _displayGridItem("Project\nDocumentation",'assets/projectDocumentation.png',(){}),
                                   ),
                                 )
                             ),
@@ -700,21 +684,17 @@ class HomeState extends State<HomeM> {
                             ),
                           ],
                         ),
-                        Container(
-                          color: Color.fromARGB(100, 191, 191, 191),
-                          height: 1,
-                          width: screenWidth,
-                        ),
+                        Divider(height: 1),
                         Row(
                           children: <Widget>[
                             Expanded(
                                 child: Container(
                                   child: Padding(
                                     padding: EdgeInsets.only(top: topButtonPadding, bottom:bottomButtonPadding),
-                                    child: _displayGridItem("Company profile\n",'assets/buildingGreenHome.png',() {
+                                    child: _displayGridItem("Company profile\n",'assets/companyProfile.png',() {
                                       Navigator.push(
                                           context,
-                                          MaterialPageRoute(builder: (context) => CompanyProfileV())
+                                          CupertinoPageRoute(builder: (context) => CompanyProfileV())
                                       );
                                     }),
                                   ),
@@ -727,17 +707,13 @@ class HomeState extends State<HomeM> {
                                   ),
                                   child: Padding(
                                     padding: EdgeInsets.only(top: topButtonPadding, bottom:bottomButtonPadding),
-                                    child: _displayGridItem("Service / FAQ\n",'assets/informationGreen.png',(){}),
+                                    child: _displayGridItem("Service / FAQ\n",'assets/FAQ.png',(){}),
                                   ),
                                 )
                             ),
                           ],
                         ),
-                        Container(
-                          color: Color.fromARGB(100, 191, 191, 191),
-                          height: 1,
-                          width: screenWidth,
-                        )
+                        Divider(height: 1)
                       ],
                     ),
                   ),

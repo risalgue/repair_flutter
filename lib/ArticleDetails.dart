@@ -193,7 +193,7 @@ class ArticleDetailsState extends State<ArticleDetailsV> {
             onTap: (){
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => LoginV()),
+                CupertinoPageRoute(builder: (context) => LoginV()),
               ).then((value){
                 ISClientO.instance.isTokenAvailable().then((bool loggued) {
                   this.loggued = loggued;
@@ -355,7 +355,7 @@ class ArticleDetailsState extends State<ArticleDetailsV> {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => LoginV()),
+                    CupertinoPageRoute(builder: (context) => LoginV()),
                   );
                 },
               ),
@@ -371,7 +371,7 @@ class ArticleDetailsState extends State<ArticleDetailsV> {
     print('inserted row: $id');
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => ArticleBookMark())
+      CupertinoPageRoute(builder: (context) => ArticleBookMark())
     );
   }
 
@@ -380,7 +380,7 @@ class ArticleDetailsState extends State<ArticleDetailsV> {
       print('inserted row: $id to Cart');
       Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => ArticleInCart())
+          CupertinoPageRoute(builder: (context) => ArticleInCart())
       ).then((_){
         setState(() {
           _readAllProductsInCart();
@@ -444,7 +444,7 @@ class ArticleDetailsState extends State<ArticleDetailsV> {
                 onTap: () {
                   Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => ArticleInCart())
+                      CupertinoPageRoute(builder: (context) => ArticleInCart())
                   );
                 },
                 child: Container(

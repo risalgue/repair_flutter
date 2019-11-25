@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_mailer/flutter_mailer.dart';
+import 'package:repairservices/ArticleWebPreview.dart';
 import 'package:repairservices/models/DoorHinge.dart';
 import 'package:repairservices/models/DoorLock.dart';
 import 'package:repairservices/models/Sliding.dart';
@@ -7,6 +9,7 @@ import 'database_helpers.dart';
 import 'package:repairservices/models/Windows.dart';
 import 'IdentificationType.dart';
 import 'SettingArticleIdentification.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 class ArticleIdentificationV extends StatefulWidget {
   @override
@@ -17,9 +20,9 @@ class ArticleIdentificationV extends StatefulWidget {
 class _ArticleIdentificationState extends State<ArticleIdentificationV> {
 
   DatabaseHelper helper = DatabaseHelper.instance;
-//  List<Windows> articleWindows;
   List<Fitting> articleList;
   int selected = 0;
+  bool selecting = false;
 
   _readAllWindows() async {
     articleList = [];
@@ -48,6 +51,37 @@ class _ArticleIdentificationState extends State<ArticleIdentificationV> {
     setState(() {});
   }
 
+  _deleteArticle(int index) async {
+    if(articleList[index] is Windows){
+      await helper.deleteWindows((articleList[index] as Windows).id);
+    }
+    else if(articleList[index] is Sliding){
+      await helper.deleteSliding((articleList[index] as Sliding).id);
+    }
+    else if(articleList[index] is DoorLock){
+      await helper.deleteDoorLock((articleList[index] as DoorLock).id);
+    }
+    else if(articleList[index] is DoorHinge){
+      await helper.deleteDoorHinge((articleList[index] as DoorHinge).id);
+    }
+    _readAllWindows();
+  }
+
+  _sendPdfByEmail(int index) async {
+    debugPrint('Sending pdf by Email with path: ${articleList[index].pdfPath}');
+    final MailOptions mailOptions = MailOptions(
+      body: 'Article fitting',
+      subject: articleList[index].name,
+      recipients: ['ersatzteile@schueco.com'],
+      isHTML: true,
+//      bccRecipients: ['other@example.com'],
+//      ccRecipients: ['third@example.com'],
+      attachments: [articleList[index].pdfPath],
+    );
+
+    await FlutterMailer.send(mailOptions);
+  }
+
   String lastSelectedValue;
 
   void showDemoActionSheet({BuildContext context, Widget child}) {
@@ -65,8 +99,6 @@ class _ArticleIdentificationState extends State<ArticleIdentificationV> {
     showDemoActionSheet(
       context: context,
       child: CupertinoActionSheet(
-//        title: const Text('Favorite Dessert'),
-//        message: const Text('Please select the best dessert from the options below.'),
         actions: <Widget>[
           CupertinoActionSheetAction(
             child: new Text('Print', style: Theme.of(context).textTheme.display1),
@@ -96,11 +128,56 @@ class _ArticleIdentificationState extends State<ArticleIdentificationV> {
     super.initState();
     _readAllWindows();
   }
+  Widget _actionRight(){
+    if (selecting) {
+      return InkWell(
+        child: Image.asset(
+        'assets/checkGreen.png',
+        height: 25,
+        ),
+        onTap: (){
+          for (Fitting article in articleList){
+            if(article.selected){
+              article.selected = false;
+            }
+          }
+          setState(() {
+            selecting = false;
+          });
+        },
+      );
+    }
+    else {
+      return IconButton(
+        onPressed: (){},
+        icon: Icon(Icons.image),
+      );
+    }
+  }
+  Widget _actionRightListTile(int index){
+    if (selecting) {
+      if(articleList[index].selected) {
+        return Container(
+          height: 25,
+          width: 25,
+          child: Image.asset('assets/selectedSquare.png'),
+        );
+      }
+      else {
+        return Container(
+          height: 25,
+          width: 25,
+          child: Image.asset('assets/unselectedSquare.png'),
+        );
+      }
+    }
+    else {
+      return Icon(Icons.arrow_forward_ios);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
@@ -115,10 +192,7 @@ class _ArticleIdentificationState extends State<ArticleIdentificationV> {
           color: Theme.of(context).primaryColor,
         ),
         actions: <Widget>[
-          IconButton(
-            onPressed: (){},
-            icon: Icon(Icons.image),
-          ),
+          _actionRight()
         ],
       ),
 
@@ -126,29 +200,60 @@ class _ArticleIdentificationState extends State<ArticleIdentificationV> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           new Expanded(
-//            height: MediaQuery.of(context).size.height - 35 - kToolbarHeight - kBottomNavigationBarHeight,
-//            padding: EdgeInsets.only(bottom: 65, top: 0, left: 0,right: 0),
-//            margin: EdgeInsets.only(bottom: 65, top: 0, left: 0,right: 0),
             child: new ListView.separated(
               itemCount: articleList == null ? 0 : articleList.length,
               itemBuilder: (BuildContext context, int index){
                 return new Container(
                   color: Color.fromRGBO(243, 243, 243, 1.0),
-                  child: new ListTile(
-                    leading: Image.asset('assets/productImage.png'),
-                    title: Text(
-                        articleList[index].name,
-                        style:  Theme.of(context).textTheme.body1
+                  child: Slidable(
+                    actionPane: SlidableDrawerActionPane(),
+                    actionExtentRatio: 0.20,
+                    child: ListTile(
+                      leading: Image.asset('assets/productImage.png'),
+                      title: Text(
+                          articleList[index].name,
+                          style:  Theme.of(context).textTheme.body1
+                      ),
+                      subtitle:  Text(
+                          articleList[index].created.month.toString() + "-" + articleList[index].created.day.toString() + "-" + articleList[index].created.year.toString(),
+                          style: Theme.of(context).textTheme.body2
+                      ),
+                      trailing: _actionRightListTile(index),
+                      onTap: (){
+                        if(selecting) {
+                          setState(() {
+                            articleList[index].selected = !articleList[index].selected;
+                          });
+                        }
+                        else {
+                          Navigator.push(context, CupertinoPageRoute(builder: (context) => ArticleWebPreview(articleList[index])));
+                        }
+                      },
                     ),
-                    subtitle:  Text(
-                        articleList[index].created.month.toString() + "-" + articleList[index].created.day.toString() + "-" + articleList[index].created.year.toString(),
-                        style: Theme.of(context).textTheme.body2
-                    ),
-                    trailing: Icon(Icons.arrow_forward_ios),
-                    onTap: (){
-                      debugPrint("Index: " + index.toString());
-                    },
-                  ),
+                    secondaryActions: <Widget>[
+                      IconSlideAction(
+                        caption: 'E-mail',
+                        foregroundColor: Colors.white,
+                        color: Theme.of(context).primaryColor,
+                        icon: CupertinoIcons.mail,
+                        onTap: () {
+                          Future.delayed(Duration(milliseconds: 500),(){
+                            _sendPdfByEmail(index);
+                          });
+                        },
+                      ),
+                      IconSlideAction(
+                        caption: 'Delete',
+                        color: Colors.red,
+                        icon: CupertinoIcons.delete,
+                        onTap: () {
+                          Future.delayed(Duration(milliseconds: 500),(){
+                            _deleteArticle(index);
+                          });
+                        },
+                      ),
+                    ],
+                  )
                 );
               },
               separatorBuilder: (context, index) {
@@ -189,7 +294,7 @@ class _ArticleIdentificationState extends State<ArticleIdentificationV> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => SettingsArticleIdentificationV()),
+                      CupertinoPageRoute(builder: (context) => SettingsArticleIdentificationV()),
                     );
                   },
                 ),
@@ -214,7 +319,7 @@ class _ArticleIdentificationState extends State<ArticleIdentificationV> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => IdentificationTypeV()),
+                      CupertinoPageRoute(builder: (context) => IdentificationTypeV()),
                     ).then((_){
                       setState(() {
                         _readAllWindows();
@@ -240,7 +345,16 @@ class _ArticleIdentificationState extends State<ArticleIdentificationV> {
                       )
                     ],
                   ),
-                  onTap: () => selected == 0 ? _onActionSheetPress(context) : (){},
+                  onTap: () {
+                    if(!selecting){
+                      setState(() {
+                        selecting = true;
+                      });
+                    }
+                    else if (selected != 0){
+                      _onActionSheetPress(context);
+                    }
+                  },
                 )
               ],
             ),

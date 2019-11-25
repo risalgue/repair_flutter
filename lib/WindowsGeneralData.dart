@@ -268,7 +268,7 @@ class WindowsGeneralDataState extends State<WindowsGeneralData> {
     int id = await helper.insert(windows);
     print('inserted row: $id');
     if(id!=null) {
-      Navigator.push(context, MaterialPageRoute(builder: (context)=>ArticleWebPreview(windows)));
+      Navigator.push(context, CupertinoPageRoute(builder: (context)=>ArticleWebPreview(windows)));
 //      debugPrint('poping');
 //      Navigator.of(context).popUntil((route) => route.settings.name == "ArticleIdentificationV");
     }
@@ -321,7 +321,7 @@ class WindowsGeneralDataState extends State<WindowsGeneralData> {
         onTap: (){
           List<String> myOptions = [];
           SystemDepth.values.forEach((e) => myOptions.add(e.toString().split(".")[1].replaceAll("e", "")));
-          Navigator.push(context, MaterialPageRoute(builder: (context) => GenericSelection("System depth", myOptions))).then((systemDepth){
+          Navigator.push(context, CupertinoPageRoute(builder: (context) => GenericSelection("System depth", myOptions))).then((systemDepth){
             setState(() {
               systemCtr.text = systemDepth;
             });

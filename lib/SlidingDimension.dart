@@ -167,7 +167,7 @@ class SlidingDimensionState extends State<SlidingDimension>{
     int id = await helper.insertSliding(sliding);
     print('inserted row: $id');
     if(id!=null) {
-      Navigator.push(context, MaterialPageRoute(builder: (context)=>ArticleWebPreview(sliding)));
+      Navigator.push(context, CupertinoPageRoute(builder: (context)=>ArticleWebPreview(sliding)));
     }
   }
 

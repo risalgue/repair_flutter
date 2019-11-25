@@ -1,10 +1,11 @@
 // database table and column names
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:path/path.dart';
+//import 'package:path_provider/path_provider.dart';
+//import 'package:path/path.dart';
 import 'package:repairservices/models/Company.dart';
 
 final String tableWindows = 'windows';
@@ -27,6 +28,7 @@ class Fitting{
   DateTime created;
   String year;
   String pdfPath;
+  bool selected = false;
 }
 class Windows extends Fitting {
   int number;
@@ -90,7 +92,8 @@ class Windows extends Fitting {
     String htmlStr = htmlFile;
     if(filePath != null && filePath != ''){
       if(isImage) {
-        htmlStr = htmlStr.replaceAll('#articleImage#', 'file://'+filePath);
+        String imageBase64 = base64Encode(File(filePath).readAsBytesSync());
+        htmlStr = htmlStr.replaceAll('#articleImage#', 'data:image/png;base64, $imageBase64');
       }
       else {
         htmlStr = htmlStr.replaceAll('<tr class="details"><td> <img src="#articleImage#" style="width:300%; max-width:300px;"></td></tr>', '');
@@ -99,12 +102,10 @@ class Windows extends Fitting {
     else {
       htmlStr = htmlStr.replaceAll('<tr class="details"><td> <img src="#articleImage#" style="width:300%; max-width:300px;"></td></tr>', '');
     }
-    Directory directory = await getApplicationDocumentsDirectory();
-    var dbPath = join(directory.path, "logoImage.png");
     ByteData data = await rootBundle.load("assets/repairService.png");
     List<int> bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
-    await File(dbPath).writeAsBytes(bytes);
-    htmlStr = htmlStr.replaceAll('#LOGOIMAGE#', 'file://'+dbPath);
+    String logoBase64Image = base64Encode(bytes);
+    htmlStr = htmlStr.replaceAll('#LOGOIMAGE#', 'data:image/png;base64, $logoBase64Image');
     htmlStr = htmlStr.replaceAll("#CREATED#", created.month.toString() + '/' + created.day.toString() + '/' + created.year.toString());
     if (Company.currentCompany != null){
       htmlStr = htmlStr.replaceAll('#COMPANYPROFILE#', Company.currentCompany.htmlLayoutPreview());
@@ -143,7 +144,7 @@ class Windows extends Fitting {
     else {
       htmlStr = htmlStr.replaceAll('<tr class="heading"><td> Description </td><td> <br></td></tr><tr class="details"><td> #description# </td></tr>', '');
     }
-    debugPrint(htmlStr);
+    debugPrint('html in windows replaced');
     return htmlStr;
   }
 }

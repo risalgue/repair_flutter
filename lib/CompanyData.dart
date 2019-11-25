@@ -271,7 +271,7 @@ class CompanyDataState extends State<CompanyDataV> {
               )
           ),
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) =>  AddressCompanyV(this.company.address)))
+              Navigator.push(context, CupertinoPageRoute(builder: (context) =>  AddressCompanyV(this.company.address)))
               .then((_){
 
               });

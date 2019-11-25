@@ -184,6 +184,7 @@ class LockDimensionsState extends State<LockDimensions> {
     });
   }
   @override
+
   Widget build(BuildContext context) {
 
     List<Widget> pages = [
@@ -574,7 +575,7 @@ class LockDimensionsState extends State<LockDimensions> {
             onTap: (){
               final doorLock = DoorLock.withData("Door Lock Fitting", DateTime.now(), aCtr.text, bCtr.text, cCtr.text, dCtr.text, eCtr.text,
                   fCtr.text,imagePath1,imagePath2,imagePath3);
-              Navigator.push(context, MaterialPageRoute(builder: (context) => DoorLockGeneralData(doorLock)));
+              Navigator.push(context, CupertinoPageRoute(builder: (context) => DoorLockGeneralData(doorLock)));
             },
           )
         ],

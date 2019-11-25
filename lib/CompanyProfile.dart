@@ -113,7 +113,7 @@ class CompanyProfileState extends State<CompanyProfileV> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => CreateCompanyV(new Company(),true)),
+                      CupertinoPageRoute(builder: (context) => CreateCompanyV(new Company(),true)),
                     ).then((_) {
                       this.setState(() {
                         _readValues();
@@ -178,7 +178,6 @@ class CompanyProfileState extends State<CompanyProfileV> {
                                     },
                                   ),
                                 ),
-
                               ],
                             )
                           ],
@@ -187,7 +186,7 @@ class CompanyProfileState extends State<CompanyProfileV> {
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => CreateCompanyV(companyList[index],false)),
+                            CupertinoPageRoute(builder: (context) => CreateCompanyV(companyList[index],false)),
                           ).then((_) {
                             this.setState(() {
                               _readValues();
@@ -195,93 +194,7 @@ class CompanyProfileState extends State<CompanyProfileV> {
                           });
                         },
                       );
-//                      return CupertinoButton(
-//                        padding: EdgeInsets.all(0),
-//                        onPressed: () {
-//                          Navigator.push(
-//                            context,
-//                            MaterialPageRoute(builder: (context) => CreateCompanyV(companyList[index],false)),
-//                          ).then((_) {
-//                            this.setState(() {
-//                              _readValues();
-//                            });
-//                          });
-//                        },
-//                        child: new Column(
-//                            mainAxisAlignment: MainAxisAlignment.start,
-//                            crossAxisAlignment: CrossAxisAlignment.start,
-//                            children: <Widget>[
-//                              new Row(
-//                                mainAxisAlignment: MainAxisAlignment.spaceAround,
-//                                children: <Widget>[
-//                                  new Container(
-//                                    margin: EdgeInsets.only(left: 16),
-//                                    width: 24,
-//                                    height: 24,
-//                                    child: _loadImage(companyList[index]),
-//                                  ),
-//                                  new Expanded(
-//                                      child: new Column(
-//                                        mainAxisAlignment: MainAxisAlignment.start,
-//                                        crossAxisAlignment: CrossAxisAlignment.start,
-//                                        children: <Widget>[
-//                                          new Container(
-//                                            margin: EdgeInsets.only(top: 8, left: 16),
-//                                            child: Text(
-//                                                companyList[index].name,
-//                                                style:  Theme.of(context).textTheme.body1
-//                                            ),
-//                                          ),
-//                                          new Container(
-//                                            margin: EdgeInsets.only(top: 8, left: 16),
-//                                            child: Text(
-//                                                companyList[index].additionalInf,
-//                                                style:  Theme.of(context).textTheme.body2
-//                                            ),
-//                                          )
-//                                        ],
-//                                      )
-//                                  ),
-//
-//                                ],
-//                              ),
-//                              new Row(
-//                                children: <Widget>[
-//                                  new Container(
-//                                    margin: EdgeInsets.only(left: 56),
-//                                    child: Text(
-//                                        'Default company',
-//                                        style:  Theme.of(context).textTheme.body1
-//                                    ),
-//                                  ),
-//                                  new Container(
-//                                    margin: EdgeInsets.only(left: 16),
-//                                    child: CupertinoSwitch(
-//                                      value: companyList[index].defaultC == null ? false : companyList[index].defaultC,
-//                                      activeColor: Theme.of(context).primaryColor,
-//                                      onChanged: (bool value) {
-//                                        setState(() {
-//                                          companyList[index].defaultC = value;
-//                                          this._updateCompany(companyList[index]);
-//                                          if (value == true) {
-//                                            for (Company company in companyList) {
-//                                              if (company.id != companyList[index].id) {
-//                                                company.defaultC = false;
-//                                                this._updateCompany(company);
-//                                              }
-//                                            }
-//                                          }
-//                                        });
-//                                      },
-//                                    ),
-//                                  )
-//                                ],
-//                              )
-//                            ]
-//                        ),
-//                      );
                     },
-//                    shrinkWrap: true,
                   ),
                 )
               ]

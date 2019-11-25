@@ -156,7 +156,7 @@ class ShippingAddressState extends State<ShippingAddress> {
                       )
                   ),
                   onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => AddOrderAddress()));
+                    Navigator.push(context, CupertinoPageRoute(builder: (context) => AddOrderAddress()));
                   },
                 )
             ),
@@ -181,7 +181,7 @@ class ShippingAddressState extends State<ShippingAddress> {
                   ),
                   onTap: (){
                     if (selectedAddress != null) {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => CheckoutOrder(this.selectedAddress)));
+                      Navigator.push(context, CupertinoPageRoute(builder: (context) => CheckoutOrder(this.selectedAddress)));
                     }
                     else {
                       _showAlertDialog(context, "Select the shipping address first", 'OK');

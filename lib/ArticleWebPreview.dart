@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
@@ -7,6 +6,7 @@ import 'package:flutter/services.dart';
 //import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:flutter_full_pdf_viewer/flutter_full_pdf_viewer.dart';
 import 'package:flutter_html_to_pdf/flutter_html_to_pdf.dart';
+import 'package:flutter_mailer/flutter_mailer.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:repairservices/database_helpers.dart';
@@ -37,25 +37,29 @@ class ArticleWebPreviewState extends State<ArticleWebPreview> {
   }
 
   Widget _getTitle(){
-    _loadHtmlFromAssets();
+//    _loadHtmlFromAssets();
     return Text("Article Preview",style: Theme.of(context).textTheme.body1);
   }
 
   _loadHtmlFromAssets() async {
     String fileText = '';
     if(article is Windows){
+      debugPrint('isWindows');
       fileText = await rootBundle.loadString('assets/articleWindows.html');
       fileText = await (article as Windows).getHtmlString(fileText);
     }
     else if(article is DoorLock){
+      debugPrint('isDoorLock');
       fileText = await rootBundle.loadString('assets/articleDoorLock.html');
       fileText = await (article as DoorLock).getHtmlString(fileText);
     }
     else if(article is DoorHinge){
+      debugPrint('isDoorHinge');
       fileText = await rootBundle.loadString('assets/articleDoorHinge.html');
       fileText = await (article as DoorHinge).getHtmlString(fileText);
     }
     else if(article is Sliding){
+      debugPrint('isSliding');
       fileText = await rootBundle.loadString('assets/articleSliding.html');
       fileText = await (article as Sliding).getHtmlString(fileText);
     }
@@ -79,6 +83,7 @@ class ArticleWebPreviewState extends State<ArticleWebPreview> {
   }
 
   Future<void> generateExampleDocument() async {
+    debugPrint('generatedExampleDocuent');
     var htmlContent = await _loadHtmlFromAssets();
 
     Directory appDocDir = await getApplicationDocumentsDirectory();
@@ -90,7 +95,7 @@ class ArticleWebPreviewState extends State<ArticleWebPreview> {
     generatedPdfFilePath = generatedPdfFile.path;
     article.pdfPath = generatedPdfFilePath;
     _savePDFPath();
-    Navigator.push(context, MaterialPageRoute(builder: (context) => PDFViewerScaffold(
+    Navigator.push(context, CupertinoPageRoute(builder: (context) => PDFViewerScaffold(
         appBar: AppBar(
           iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
           backgroundColor: Colors.white,
@@ -112,15 +117,17 @@ class ArticleWebPreviewState extends State<ArticleWebPreview> {
 
   _sendPdfByEmail() async {
     debugPrint('Sending pdf by Email');
-//    final Email email = Email(
-//      body: 'Article Fitting',
-//      subject: article.name,
-//      recipients: ['ersatzteile@schueco.com'],
-//      attachmentPath: article.pdfPath,
-//      isHTML: false,
-//    );
-//
-//    await FlutterEmailSender.send(email);
+    final MailOptions mailOptions = MailOptions(
+      body: 'Article fitting',
+      subject: article.name,
+      recipients: ['ersatzteile@schueco.com'],
+      isHTML: true,
+//      bccRecipients: ['other@example.com'],
+//      ccRecipients: ['third@example.com'],
+      attachments: [article.pdfPath],
+    );
+
+    await FlutterMailer.send(mailOptions);
   }
 
   @override
@@ -146,7 +153,7 @@ class ArticleWebPreviewState extends State<ArticleWebPreview> {
               Padding(
                 padding: EdgeInsets.only(right: 8),
                 child: InkWell(
-                  child: Icon(Icons.pageview),
+                  child: Icon(Icons.picture_as_pdf),
                   onTap: ()=>generateExampleDocument(),
                 ),
               )

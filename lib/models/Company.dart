@@ -1,4 +1,8 @@
 // database table and column names
+import 'dart:convert';
+
+import 'dart:io';
+
 final String tableCompany = 'company';
 final String columnCompanyId = '_id';
 final String columnCompanyName = 'name';
@@ -83,7 +87,7 @@ class Company {
     return map;
   }
   String htmlLayoutPreview(){
-    String str = '\\<tr class="information"><td colspan="2" style="padding-bottom: 0px;"><h4 style="color: #c5571f;">Company profile:</h4></td></tr>'
+    String str = '<tr class="information"><td colspan="2" style="padding-bottom: 0px;"><h4 style="color: #c5571f;">Company profile:</h4></td></tr>'
         '<td><h4>#COMPANYNAME#</h4></td><td class="title"> <img src="#LOGO#" style="width:70%; max-width:70px;"></td><tr class="details">'
         '<td> #ADITIONALINFORMATION# </td></tr><tr class="detailsc"><td style="padding-bottom: 0px;"> <a style="font-weight:bold;">'
         'Phone number:</a> #PHONE# </td></tr><tr class="detailsc"><td style="padding-bottom: 0px;"> <a style="font-weight:bold;">Email:'
@@ -92,7 +96,8 @@ class Company {
         '<td style="padding-bottom: 0px;"> <a style="font-weight:bold;">Address:</a> #ADDRESS# </td></tr><tr class="detailsc">'
         '<td style="padding-bottom: 0px;"> <a style="font-weight:bold;">Company Text:</a> #TEXTEXPORTEMAIL# </td></tr>';
     if(this.logoPath != null && this.logoPath != ''){
-      str = str.replaceAll("#LOGO#",logoPath);
+      String logo64 = base64Encode(File(logoPath).readAsBytesSync());
+      str = str.replaceAll("#LOGO#",'data:image/png;base64,$logo64');
     }
     else {
       str = str.replaceAll('\\<td class="title"> <img src="#LOGO#" style="width:70%; max-width:70px;"></td>', '');
@@ -180,31 +185,31 @@ class Address {
     }
     if (houseNumber != null) {
       if (address.length > 0) {
-        address.add(" ${houseNumber}");
+        address.add(" $houseNumber");
       }
       else {
-        address.add("${houseNumber}");
+        address.add("$houseNumber");
       }
     }
     if (extraAddressLine != null && extraAddressLine != "") {
       if (address.length > 0) {
-        address.add(", ${extraAddressLine}");
+        address.add(", $extraAddressLine");
       }
       else {
-        address.add("${extraAddressLine}");
+        address.add("$extraAddressLine");
       }
     }
     if (postCode != null) {
       if (address.length > 0) {
-        address.add(", ${postCode}");
+        address.add(", $postCode");
       }
       else {
-        address.add("${postCode}");
+        address.add("$postCode");
       }
     }
     if (location != null && location != "") {
       if (address.length > 0) {
-        address.add(", ${location}");
+        address.add(", $location");
       }
     }
     String completeAddressStr = "";

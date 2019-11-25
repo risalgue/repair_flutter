@@ -8,7 +8,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:repairservices/models/DoorHinge.dart';
 
 class DoorHingeDimensionBarrel extends StatefulWidget {
-  DoorHinge doorHinge;
+  final DoorHinge doorHinge;
   DoorHingeDimensionBarrel(this.doorHinge);
   @override
   State<StatefulWidget> createState() {

@@ -9,7 +9,6 @@ class CompanyEmailStandartTextV extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Scaffold(
         appBar: AppBar(
           iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
